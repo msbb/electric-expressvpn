@@ -96,13 +96,20 @@ export class ExpresssvpnService {
         from(this.exec('expressvpn status')).pipe(
           map((message) => {
             const plainMessage = this.toPlainString(message);
+            const connectedToMessage = this._connectedToMessage$.getValue();
+
             if (plainMessage.includes('notconnected')) {
               this._isDisconnecting$.next(false);
-              this.clearConnectToMessage();
+              if (connectedToMessage) {
+                this.clearConnectToMessage();
+              }
+
               return false;
             } else if (plainMessage.includes('connectedto')) {
               this._isConnecting$.next(false);
-              this.setConnectedToMessage(`${message}`);
+              if (!connectedToMessage) {
+                this.setConnectedToMessage(`${message}`);
+              }
               return true;
             }
             return false;
