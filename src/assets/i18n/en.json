@@ -1,12 +1,7 @@
 {
-  "PAGES": {
-      "HOME": {
-          "TITLE": "App works !",
-          "GO_TO_DETAIL": "Go to Detail"
-      },
-      "DETAIL": {
-        "TITLE": "Detail page !",
-        "BACK_TO_HOME": "Back to Home"
-    }
-  }
+  "notInstalledMessage": "The ExpressVPN command-line is not available. Install ExpressVPN on your device to continue.",
+  "notActivatedMessage": "Your ExpressVPN installation is not activated. Activate the installation by running 'expressvpn activate' in your terminal and entering your activation code.",
+  "notConnectedMessage": "Not connected.",
+  "connectingMessage": "Connecting",
+  "disconnectingMessage": "Disconnecting"
 }

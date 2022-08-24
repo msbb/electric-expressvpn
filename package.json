@@ -1,11 +1,11 @@
 {
-  "name": "angular-electron",
-  "version": "11.1.0",
-  "description": "Angular 14 with Electron 19 (Typescript + SASS + Hot Reload)",
+  "name": "electric-expressvpn",
+  "version": "1.0.0",
+  "description": "ExpressVPN desktop app made with Angular and Electron. Implemented using the ExpressVPN command-line app.",
   "homepage": "https://github.com/maximegris/angular-electron",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Maxim Buur",
+    "email": "mail@maximbuur.nl"
   },
   "keywords": [
     "angular",
@@ -44,6 +44,10 @@
     "version": "conventional-changelog -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md",
     "lint": "ng lint"
   },
+  "browser": {
+    "child_process": false,
+    "crypto": false
+  },
   "dependencies": {
     "@angular/common": "14.0.6",
     "@angular/compiler": "14.0.6",
@@ -53,6 +57,9 @@
     "@angular/platform-browser": "14.0.6",
     "@angular/platform-browser-dynamic": "14.0.6",
     "@angular/router": "14.0.6",
+    "@mdi/font": "7.0.96",
+    "console-browserify": "1.2.0",
+    "execa": "6.1.0",
     "rxjs": "7.5.6",
     "tslib": "^2.4.0",
     "zone.js": "~0.11.6"

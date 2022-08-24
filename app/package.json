@@ -1,13 +1,14 @@
 {
-  "name": "angular-electron",
-  "description": "Angular Electron sample",
+  "name": "electric-expressvpn",
+  "description": "ExpressVPN desktop app made with Angular and Electron. Implemented using the ExpressVPN command-line app.",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Maxim Buur",
+    "email": "mail@maximbuur.nl"
   },
-  "version": "11.1.0",
+  "version": "1.0.0",
   "main": "main.js",
   "private": true,
   "dependencies": {
+    "console-browserify": "^1.2.0"
   }
 }

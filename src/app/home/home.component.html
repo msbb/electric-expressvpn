@@ -1,7 +1,62 @@
-<div class="container">
-  <h1 class="title">
-    {{ "PAGES.HOME.TITLE" | translate }}
-  </h1>
-
-  <a routerLink="/detail">{{ "PAGES.HOME.GO_TO_DETAIL" | translate }}</a>
+<div
+  class="container"
+  *ngIf="{
+    isInstalled: isInstalled$ | async,
+    isActivated: isActivated$ | async,
+    isConnected: isConnected$ | async,
+    isConnecting: isConnecting$ | async,
+    isDisconnecting: isDisconnecting$ | async
+  } as obs"
+>
+  <div
+    class="status-gradient"
+    [ngClass]="{
+      'status-gradient--notactivated': obs.isInstalled && !obs.isActivated,
+      'status-gradient--notinstalled': !obs.isInstalled,
+      'status-gradient--disconnected': obs.isActivated && !obs.isConnected,
+      'status-gradient--connected': obs.isActivated && obs.isConnected
+    }"
+  >
+    <div
+      class="status-icon-container"
+      [ngClass]="{
+        'status-icon-container--clickable':
+          obs.isActivated && (!obs.isConnected || obs.isConnected),
+        'status-icon-container--loading':
+          obs.isConnecting || obs.isDisconnecting
+      }"
+      (click)="!obs.isDisconnecting && !obs.isConnecting && iconClick()"
+    >
+      <span
+        class="status-icon mdi"
+        [ngClass]="{
+          'mdi-alert-circle-outline': !obs.isInstalled,
+          'mdi-help-circle-outline': obs.isInstalled && !obs.isActivated,
+          'mdi-power': obs.isActivated && (!obs.isConnected || obs.isConnected)
+        }"
+      ></span>
+    </div>
+  </div>
+  <div class="status-message">
+    <ng-container *ngIf="!obs.isInstalled">{{
+      "notInstalledMessage" | translate
+    }}</ng-container>
+    <ng-container *ngIf="obs.isInstalled && !obs.isActivated">{{
+      "notActivatedMessage" | translate
+    }}</ng-container>
+    <ng-container
+      *ngIf="obs.isActivated && !obs.isConnected && !obs.isConnecting"
+      >{{ "notConnectedMessage" | translate }}</ng-container
+    >
+    <ng-container
+      *ngIf="obs.isActivated && obs.isConnected && !obs.isDisconnecting"
+      >{{ connectedToMessage$ | async }}</ng-container
+    >
+    <ng-container *ngIf="obs.isConnecting">{{
+      "connectingMessage" | translate
+    }}</ng-container>
+    <ng-container *ngIf="obs.isDisconnecting">{{
+      "disconnectingMessage" | translate
+    }}</ng-container>
+  </div>
 </div>

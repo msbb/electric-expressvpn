@@ -2,49 +2,41 @@
 html, body {
   margin: 0;
   padding: 0;
-
   height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* CAN (MUST) BE REMOVED ! Sample Global style */
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  background: url(./assets/background.jpg) no-repeat center fixed;
-  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  background-size: cover; /* version standardisée */
-
-  .title {
-    color: white;
-    margin: 0;
-    padding: 50px 20px;
-  }
-
-  a {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #ed3330;
-    padding: 20px;
-    border-radius: 5px;
-    display: inline-block;
-    border: none;
-    transition: all 0.4s ease 0s;
-
-    &:hover {
-      background: #fff;
-      color: #ed3330 !important;
-      letter-spacing: 1px;
-      -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-      -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-      box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
-      transition: all 0.4s ease 0s;
-    }
-  }
+:root {
+  --ev-bg-color: #F9F8F2;
+  --ev-color-red-dark: #AF4E61;
+  --ev-color-red-light: #EB9874;
+  --ev-color-green-dark: #5C9C2A;
+  --ev-color-green-light: #C5DC00;
+  --ev-color-orange-dark: #b6582b;
+  --ev-color-orange-light: #faa35d;
+  --color-grey-dark: #898989;
+  --color-grey-light: #C2C2C2;
+  --color-grey-lightest: #efefef;
+  --color-white: #fff;
+  --ev-base-font-color: #2C4655;
+  --font-size-large: 20px;
+  --padding-md: 20px;
+  --status-gradient-height: 150px;
+  --status-icon-container-size: 150px;
+  --status-icon-container-bg-image: linear-gradient(var(--color-white), var(--color-grey-lightest));
+  --status-icon-size: 80px;
+  --status-message-margin: 100px;
+  --box-shadow-lightest: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  --box-shadow-light: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  --box-shadow-medium: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  --box-shadow-heavy: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  --box-shadow-heaviest: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  --status-gradient-disconnected-bg-image: linear-gradient(var(--ev-color-red-light), var(--ev-color-red-dark));
+  --status-gradient-connected-bg-image: linear-gradient(var(--ev-color-green-light), var(--ev-color-green-dark));
+  --status-gradient-notinstalled-bg-image: linear-gradient(var(--color-grey-light), var(--color-grey-dark));
+  --status-gradient-notactivated-bg-image: linear-gradient(var(--ev-color-orange-light), var(--ev-color-orange-dark));
 }
-
