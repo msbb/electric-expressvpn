@@ -28,11 +28,24 @@ export class ExpresssvpnService {
   fs: typeof fs;
   exec: any;
 
+  private readonly IS_INSTALLED_POLLING_MS = 2000;
+  private readonly STATUS_POLLING_MS = 1000;
+
+  private readonly IS_INSTALLED_COMMAND = 'expressvpn';
+  private readonly STATUS_COMMAND = 'expressvpn status';
+  private readonly SMART_CONNECT_COMMAND = 'expressvpn connect';
+  private readonly DISCONNECT_COMMAND = 'expressvpn disconnect';
+
+  private readonly IS_INSTALLED_STRING = 'expressvpn';
+  private readonly NOT_ACTIVATED_STRING = 'notactivated';
+  private readonly NOT_CONNECTED_STRING = 'notconnected';
+  private readonly CONNECTED_STRING = 'connectedto';
+
   private readonly _connectedToMessage$ = new BehaviorSubject<string>('');
   private readonly _isConnecting$ = new BehaviorSubject<boolean>(false);
   private readonly _isDisconnecting$ = new BehaviorSubject<boolean>(false);
-  private readonly _statusPolling$ = timer(0, 1000).pipe(
-    switchMap(() => from(this.exec('expressvpn status')))
+  private readonly _statusPolling$ = timer(0, this.STATUS_POLLING_MS).pipe(
+    switchMap(() => from(this.exec(this.STATUS_COMMAND)))
   );
 
   constructor() {
@@ -62,11 +75,13 @@ export class ExpresssvpnService {
   }
 
   get isInstalled$(): Observable<boolean> {
-    return timer(0, 4000).pipe(
+    return timer(0, this.IS_INSTALLED_POLLING_MS).pipe(
       switchMap(() =>
-        from(this.exec('expressvpn')).pipe(
+        from(this.exec(this.IS_INSTALLED_COMMAND)).pipe(
           map((message) => {
-            if (this.toPlainString(message).includes('expressvpn')) {
+            if (
+              this.toPlainString(message).includes(this.IS_INSTALLED_STRING)
+            ) {
               return true;
             }
             return false;
@@ -80,7 +95,7 @@ export class ExpresssvpnService {
   get isActivated$(): Observable<boolean> {
     return this._statusPolling$.pipe(
       map((message) => {
-        if (this.toPlainString(message).includes('notactivated')) {
+        if (this.toPlainString(message).includes(this.NOT_ACTIVATED_STRING)) {
           return false;
         }
         return true;
@@ -95,14 +110,14 @@ export class ExpresssvpnService {
         const plainMessage = this.toPlainString(message);
         const connectedToMessage = this._connectedToMessage$.getValue();
 
-        if (plainMessage.includes('notconnected')) {
+        if (plainMessage.includes(this.NOT_CONNECTED_STRING)) {
           this._isDisconnecting$.next(false);
           if (connectedToMessage) {
             this.clearConnectToMessage();
           }
 
           return false;
-        } else if (plainMessage.includes('connectedto')) {
+        } else if (plainMessage.includes(this.CONNECTED_STRING)) {
           this._isConnecting$.next(false);
           if (!connectedToMessage) {
             this.setConnectedToMessage(`${message}`);
@@ -118,17 +133,20 @@ export class ExpresssvpnService {
   smartConnect(): void {
     this._isConnecting$.next(true);
 
-    this.childProcess.exec('expressvpn connect', (error, stdout, stderr) => {
-      if (error || stderr) {
-        this._isConnecting$.next(false);
+    this.childProcess.exec(
+      this.SMART_CONNECT_COMMAND,
+      (error, stdout, stderr) => {
+        if (error || stderr) {
+          this._isConnecting$.next(false);
+        }
       }
-    });
+    );
   }
 
   disconnect(): void {
     this._isDisconnecting$.next(true);
 
-    this.childProcess.exec('expressvpn disconnect', (error, stdout, stderr) => {
+    this.childProcess.exec(this.DISCONNECT_COMMAND, (error, stdout, stderr) => {
       if (error || stderr) {
         this._isDisconnecting$.next(false);
       }
