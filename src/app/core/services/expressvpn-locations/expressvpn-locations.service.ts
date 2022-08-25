@@ -134,4 +134,12 @@ export class ExpresssvpnLocationsService {
       catchError(() => of([]))
     );
   }
+
+  get smartLocation$(): Observable<ExpressvpnLocation> {
+    return this.locations$.pipe(
+      map((locations) =>
+        locations.find((location) => location.alias === 'smart')
+      )
+    );
+  }
 }

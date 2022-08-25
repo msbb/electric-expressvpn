@@ -118,14 +118,27 @@ export class ExpresssvpnService {
     );
   }
 
-  smartConnect(): void {
+  quickConnect(): void {
     this._isConnecting$.next(true);
 
-    this.childProcess.exec(COMMANDS.SMART_CONNECT, (error, stdout, stderr) => {
+    this.childProcess.exec(COMMANDS.CONNECT, (error, stdout, stderr) => {
       if (error || stderr) {
         this._isConnecting$.next(false);
       }
     });
+  }
+
+  connectToLocation(locationString: string): void {
+    this._isConnecting$.next(true);
+
+    this.childProcess.exec(
+      `${COMMANDS.CONNECT} ${locationString}`,
+      (error, stdout, stderr) => {
+        if (error || stderr) {
+          this._isConnecting$.next(false);
+        }
+      }
+    );
   }
 
   disconnect(): void {

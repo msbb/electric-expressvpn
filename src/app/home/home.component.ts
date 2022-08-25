@@ -32,7 +32,7 @@ export class HomeComponent {
       .pipe(take(1))
       .subscribe(([isConnected, isConnecting, isDisconnecting]) => {
         if (!isConnected && !isConnecting) {
-          this.expressvpnService.smartConnect();
+          this.expressvpnService.quickConnect();
         } else if (isConnected && !isDisconnecting) {
           this.expressvpnService.disconnect();
         }
