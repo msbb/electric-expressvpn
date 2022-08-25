@@ -31,6 +31,9 @@ export class ExpresssvpnService {
   private readonly _connectedToMessage$ = new BehaviorSubject<string>('');
   private readonly _isConnecting$ = new BehaviorSubject<boolean>(false);
   private readonly _isDisconnecting$ = new BehaviorSubject<boolean>(false);
+  private readonly _statusPolling$ = timer(0, 1000).pipe(
+    switchMap(() => from(this.exec('expressvpn status')))
+  );
 
   constructor() {
     if (this.isElectron) {
@@ -59,7 +62,7 @@ export class ExpresssvpnService {
   }
 
   get isInstalled$(): Observable<boolean> {
-    return timer(0, 2000).pipe(
+    return timer(0, 4000).pipe(
       switchMap(() =>
         from(this.exec('expressvpn')).pipe(
           map((message) => {
@@ -75,48 +78,40 @@ export class ExpresssvpnService {
   }
 
   get isActivated$(): Observable<boolean> {
-    return timer(0, 2000).pipe(
-      switchMap(() =>
-        from(this.exec('expressvpn status')).pipe(
-          map((message) => {
-            if (this.toPlainString(message).includes('notactivated')) {
-              return false;
-            }
-            return true;
-          }),
-          catchError(() => of(false))
-        )
-      )
+    return this._statusPolling$.pipe(
+      map((message) => {
+        if (this.toPlainString(message).includes('notactivated')) {
+          return false;
+        }
+        return true;
+      }),
+      catchError(() => of(false))
     );
   }
 
   get isConnected$(): Observable<boolean> {
-    return timer(0, 2000).pipe(
-      switchMap(() =>
-        from(this.exec('expressvpn status')).pipe(
-          map((message) => {
-            const plainMessage = this.toPlainString(message);
-            const connectedToMessage = this._connectedToMessage$.getValue();
+    return this._statusPolling$.pipe(
+      map((message) => {
+        const plainMessage = this.toPlainString(message);
+        const connectedToMessage = this._connectedToMessage$.getValue();
 
-            if (plainMessage.includes('notconnected')) {
-              this._isDisconnecting$.next(false);
-              if (connectedToMessage) {
-                this.clearConnectToMessage();
-              }
+        if (plainMessage.includes('notconnected')) {
+          this._isDisconnecting$.next(false);
+          if (connectedToMessage) {
+            this.clearConnectToMessage();
+          }
 
-              return false;
-            } else if (plainMessage.includes('connectedto')) {
-              this._isConnecting$.next(false);
-              if (!connectedToMessage) {
-                this.setConnectedToMessage(`${message}`);
-              }
-              return true;
-            }
-            return false;
-          }),
-          catchError(() => of(false))
-        )
-      )
+          return false;
+        } else if (plainMessage.includes('connectedto')) {
+          this._isConnecting$.next(false);
+          if (!connectedToMessage) {
+            this.setConnectedToMessage(`${message}`);
+          }
+          return true;
+        }
+        return false;
+      }),
+      catchError(() => of(false))
     );
   }
 
