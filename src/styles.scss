@@ -21,9 +21,14 @@ html, body {
   --color-grey-dark: #898989;
   --color-grey-light: #C2C2C2;
   --color-grey-lightest: #efefef;
+  --color-grey-extra-light: #F8F8F8;
   --color-white: #fff;
+  --color-black: #000;
   --ev-base-font-color: #2C4655;
+  --font-size-medium: 18px;
   --font-size-large: 20px;
+  --padding-xsm: 8px;
+  --padding-sm: 16px;
   --padding-md: 20px;
   --status-gradient-height: 150px;
   --status-icon-container-size: 150px;
@@ -39,4 +44,26 @@ html, body {
   --status-gradient-connected-bg-image: linear-gradient(var(--ev-color-green-light), var(--ev-color-green-dark));
   --status-gradient-notinstalled-bg-image: linear-gradient(var(--color-grey-light), var(--color-grey-dark));
   --status-gradient-notactivated-bg-image: linear-gradient(var(--ev-color-orange-light), var(--ev-color-orange-dark));
+}
+
+.ev-button {
+  border: none;
+  background-color: var(--color-white);
+  color: var(--ev-base-font-color);
+  font-size: var(--font-size-medium);
+  padding: var(--padding-xsm) var(--padding-sm);
+  box-shadow: var(--box-shadow-lightest);
+  border-radius: var(--padding-xsm);
+  cursor: pointer;
+  transition: background-color 0.05s ease-in-out, color 0.05s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-grey-extra-light);
+    color: var(--color-black);
+  }
+
+  &:active {
+    background-color: var(--color-grey-lightest);
+    color: var(--color-black);
+  }
 }

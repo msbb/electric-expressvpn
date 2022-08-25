@@ -3,5 +3,6 @@
   "notActivatedMessage": "Your ExpressVPN installation is not activated. Activate the installation by running 'expressvpn activate' in your terminal and entering your activation code.",
   "notConnectedMessage": "Not connected.",
   "connectingMessage": "Connecting",
-  "disconnectingMessage": "Disconnecting"
+  "disconnectingMessage": "Disconnecting",
+  "connectToLocation": "Connect to location"
 }
