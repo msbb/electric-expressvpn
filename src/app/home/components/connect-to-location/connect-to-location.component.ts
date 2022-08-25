@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { combineLatest, Observable, take } from 'rxjs';
-import { ExpresssvpnService } from '../../../../app/core/services/expressvpn/expressvpn.service';
+import { ExpresssvpnLocationsService } from '../../../core/services';
 
 @Component({
   selector: 'app-connect-to-location',
@@ -8,9 +8,11 @@ import { ExpresssvpnService } from '../../../../app/core/services/expressvpn/exp
   styleUrls: ['./connect-to-location.component.scss'],
 })
 export class ConnectToLocationComponent {
-  constructor(private readonly expressvpnService: ExpresssvpnService) {}
+  constructor(
+    private readonly expressvpnLocationsService: ExpresssvpnLocationsService
+  ) {}
 
   showLocations(): void {
-    this.expressvpnService.locations$.subscribe();
+    this.expressvpnLocationsService.locations$.subscribe();
   }
 }

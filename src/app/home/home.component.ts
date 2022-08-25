@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { combineLatest, Observable, take } from 'rxjs';
-import { ExpresssvpnService } from '../core/services/expressvpn/expressvpn.service';
+import { ExpresssvpnService } from '../core/services';
 
 @Component({
   selector: 'app-home',
