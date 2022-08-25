@@ -17,6 +17,7 @@ import {
   BehaviorSubject,
   take,
 } from 'rxjs';
+import { COMMANDS, SETTINGS, STRINGS } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -28,24 +29,11 @@ export class ExpresssvpnService {
   fs: typeof fs;
   exec: any;
 
-  private readonly IS_INSTALLED_POLLING_MS = 2000;
-  private readonly STATUS_POLLING_MS = 1000;
-
-  private readonly IS_INSTALLED_COMMAND = 'expressvpn';
-  private readonly STATUS_COMMAND = 'expressvpn status';
-  private readonly SMART_CONNECT_COMMAND = 'expressvpn connect';
-  private readonly DISCONNECT_COMMAND = 'expressvpn disconnect';
-
-  private readonly IS_INSTALLED_STRING = 'expressvpn';
-  private readonly NOT_ACTIVATED_STRING = 'notactivated';
-  private readonly NOT_CONNECTED_STRING = 'notconnected';
-  private readonly CONNECTED_STRING = 'connectedto';
-
   private readonly _connectedToMessage$ = new BehaviorSubject<string>('');
   private readonly _isConnecting$ = new BehaviorSubject<boolean>(false);
   private readonly _isDisconnecting$ = new BehaviorSubject<boolean>(false);
-  private readonly _statusPolling$ = timer(0, this.STATUS_POLLING_MS).pipe(
-    switchMap(() => from(this.exec(this.STATUS_COMMAND)))
+  private readonly _statusPolling$ = timer(0, SETTINGS.STATUS_POLLING_MS).pipe(
+    switchMap(() => from(this.exec(COMMANDS.GET_STATUS)))
   );
 
   constructor() {
@@ -75,13 +63,11 @@ export class ExpresssvpnService {
   }
 
   get isInstalled$(): Observable<boolean> {
-    return timer(0, this.IS_INSTALLED_POLLING_MS).pipe(
+    return timer(0, SETTINGS.IS_INSTALLED_POLLING_MS).pipe(
       switchMap(() =>
-        from(this.exec(this.IS_INSTALLED_COMMAND)).pipe(
+        from(this.exec(COMMANDS.IS_INSTALLED)).pipe(
           map((message) => {
-            if (
-              this.toPlainString(message).includes(this.IS_INSTALLED_STRING)
-            ) {
+            if (this.toPlainString(message).includes(STRINGS.IS_INSTALLED)) {
               return true;
             }
             return false;
@@ -95,7 +81,7 @@ export class ExpresssvpnService {
   get isActivated$(): Observable<boolean> {
     return this._statusPolling$.pipe(
       map((message) => {
-        if (this.toPlainString(message).includes(this.NOT_ACTIVATED_STRING)) {
+        if (this.toPlainString(message).includes(STRINGS.NOT_ACTIVATED)) {
           return false;
         }
         return true;
@@ -110,14 +96,14 @@ export class ExpresssvpnService {
         const plainMessage = this.toPlainString(message);
         const connectedToMessage = this._connectedToMessage$.getValue();
 
-        if (plainMessage.includes(this.NOT_CONNECTED_STRING)) {
+        if (plainMessage.includes(STRINGS.NOT_CONNECTED)) {
           this._isDisconnecting$.next(false);
           if (connectedToMessage) {
             this.clearConnectToMessage();
           }
 
           return false;
-        } else if (plainMessage.includes(this.CONNECTED_STRING)) {
+        } else if (plainMessage.includes(STRINGS.CONNECTED)) {
           this._isConnecting$.next(false);
           if (!connectedToMessage) {
             this.setConnectedToMessage(`${message}`);
@@ -133,20 +119,17 @@ export class ExpresssvpnService {
   smartConnect(): void {
     this._isConnecting$.next(true);
 
-    this.childProcess.exec(
-      this.SMART_CONNECT_COMMAND,
-      (error, stdout, stderr) => {
-        if (error || stderr) {
-          this._isConnecting$.next(false);
-        }
+    this.childProcess.exec(COMMANDS.SMART_CONNECT, (error, stdout, stderr) => {
+      if (error || stderr) {
+        this._isConnecting$.next(false);
       }
-    );
+    });
   }
 
   disconnect(): void {
     this._isDisconnecting$.next(true);
 
-    this.childProcess.exec(this.DISCONNECT_COMMAND, (error, stdout, stderr) => {
+    this.childProcess.exec(COMMANDS.DISCONNECT, (error, stdout, stderr) => {
       if (error || stderr) {
         this._isDisconnecting$.next(false);
       }
