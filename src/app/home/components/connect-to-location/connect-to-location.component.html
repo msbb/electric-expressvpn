@@ -1,16 +1,36 @@
-<div class="button-container" *ngIf="smartLocation$ | async as smartLocation">
-  <button (click)="connectToLocation(smartLocation.location)" class="ev-button">
-    {{
-      ("connectToSmartLocation" | translate) +
-        " (" +
-        smartLocation.location +
-        ")"
-    }}
-  </button>
-</div>
-
-<div class="button-container">
-  <button (click)="showLocations()" class="ev-button">
-    {{ "connectToLocation" | translate }}
-  </button>
-</div>
+<ng-container
+  *ngIf="{
+    isActivated: isActivated$ | async,
+    isConnecting: isConnecting$ | async,
+    isDisconnecting: isDisconnecting$ | async
+  } as obs"
+>
+  <ng-container *ngIf="obs.isActivated">
+    <div
+      class="button-container"
+      *ngIf="smartLocation$ | async as smartLocation"
+    >
+      <button
+        (click)="connectToLocation(smartLocation.location)"
+        class="ev-button"
+        [disabled]="obs.isConnecting || obs.isDisconnecting"
+      >
+        {{
+          ("connectToSmartLocation" | translate) +
+            " (" +
+            smartLocation.location +
+            ")"
+        }}
+      </button>
+    </div>
+    <div class="button-container">
+      <button
+        (click)="showLocations()"
+        class="ev-button"
+        [disabled]="obs.isConnecting || obs.isDisconnecting"
+      >
+        {{ "connectToLocation" | translate }}
+      </button>
+    </div>
+  </ng-container>
+</ng-container>

@@ -12,7 +12,19 @@ import {
   styleUrls: ['./connect-to-location.component.scss'],
 })
 export class ConnectToLocationComponent {
-  smartLocation$: Observable<ExpressvpnLocation> =
+  readonly isInstalled$: Observable<boolean> =
+    this.expressvpnService.isInstalled$;
+  readonly isActivated$: Observable<boolean> =
+    this.expressvpnService.isActivated$;
+  readonly isConnected$: Observable<boolean> =
+    this.expressvpnService.isConnected$;
+  readonly connectedToMessage$: Observable<string> =
+    this.expressvpnService.connectedToMessage$;
+  readonly isConnecting$: Observable<boolean> =
+    this.expressvpnService.isConnecting$;
+  readonly isDisconnecting$: Observable<boolean> =
+    this.expressvpnService.isDisconnecting$;
+  readonly smartLocation$: Observable<ExpressvpnLocation> =
     this.expressvpnLocationsService.smartLocation$;
 
   constructor(
@@ -21,7 +33,7 @@ export class ConnectToLocationComponent {
   ) {}
 
   showLocations(): void {
-    this.expressvpnLocationsService.locations$.subscribe();
+    this.expressvpnLocationsService.recommendedLocationsSortedByCountry$.subscribe();
   }
 
   connectToLocation(location: string) {

@@ -6,20 +6,9 @@ import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import * as util from 'util';
-import {
-  Observable,
-  from,
-  map,
-  catchError,
-  of,
-  timer,
-  switchMap,
-  BehaviorSubject,
-  take,
-  tap,
-} from 'rxjs';
-import { COMMANDS, SETTINGS, STRINGS } from '../../constants';
-import { ExpressvpnLocation } from '../../models';
+import { Observable, from, map, catchError, of } from 'rxjs';
+import { COMMANDS } from '../../constants';
+import { ExpressvpnLocation, LocationsSortedByCountry } from '../../models';
 
 @Injectable({
   providedIn: 'root',
@@ -54,8 +43,25 @@ export class ExpresssvpnLocationsService {
           return [];
         }
       }),
-      tap((locations) => console.log('locations', locations)),
       catchError(() => of([]))
+    );
+  }
+
+  get recommendedLocations$(): Observable<Array<ExpressvpnLocation>> {
+    return this.locations$.pipe(
+      map((locations) => locations.filter((location) => location.recommended))
+    );
+  }
+
+  get locationsSortedByCountry$(): Observable<LocationsSortedByCountry> {
+    return this.locations$.pipe(
+      map((locations) => this.sortLocationsByCountry(locations))
+    );
+  }
+
+  get recommendedLocationsSortedByCountry$(): Observable<LocationsSortedByCountry> {
+    return this.recommendedLocations$.pipe(
+      map((locations) => this.sortLocationsByCountry(locations))
     );
   }
 
@@ -142,5 +148,25 @@ export class ExpresssvpnLocationsService {
         recommended,
       };
     });
+  }
+
+  private sortLocationsByCountry(
+    locations: Array<ExpressvpnLocation>
+  ): LocationsSortedByCountry {
+    const locationsSortedByCountry: LocationsSortedByCountry = {};
+
+    locations
+      .filter((location) => !(location.alias === 'smart'))
+      .forEach((location) => {
+        if (locationsSortedByCountry[location.country]) {
+          locationsSortedByCountry[location.country].push(location);
+        } else {
+          locationsSortedByCountry[location.country] = [location];
+        }
+      });
+
+    console.log(locationsSortedByCountry);
+
+    return locationsSortedByCountry;
   }
 }
