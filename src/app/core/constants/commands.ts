@@ -1,7 +1,7 @@
 export const COMMANDS = {
-  IS_INSTALLED: 'expressvpn',
-  GET_STATUS: 'expressvpn status',
-  CONNECT: 'expressvpn connect',
-  DISCONNECT: 'expressvpn disconnect',
-  LOCATION_LIST: 'expressvpn list all',
+  isInstalled: 'expressvpn',
+  getStatus: 'expressvpn status',
+  connect: 'expressvpn connect',
+  disconnect: 'expressvpn disconnect',
+  locationList: 'expressvpn list all',
 };
