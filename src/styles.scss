@@ -49,3 +49,8 @@ html, body {
   --status-gradient-notinstalled-bg-image: linear-gradient(var(--color-grey-1), var(--color-grey-0));
   --status-gradient-notactivated-bg-image: linear-gradient(var(--ev-color-orange-light), var(--ev-color-orange-dark));
 }
+
+.mdi {
+  font-size: 17px;
+  margin-right: 4px;
+}

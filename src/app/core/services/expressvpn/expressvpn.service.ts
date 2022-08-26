@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-
-// If you import a module but never use any of the imported values other than as TypeScript types,
-// the resulting javascript file will look as if you never imported the module at all.
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
@@ -16,12 +13,10 @@ import {
   switchMap,
   BehaviorSubject,
   take,
-  tap,
   Subscription,
   combineLatest,
 } from 'rxjs';
 import { COMMANDS, SETTINGS, STRINGS } from '../../constants';
-import { ExpressvpnLocation } from '../../models';
 
 @Injectable({
   providedIn: 'root',
@@ -39,6 +34,7 @@ export class ExpresssvpnService {
   private readonly _statusPolling$ = timer(0, SETTINGS.statusPollingMs).pipe(
     switchMap(() => from(this.exec(COMMANDS.getStatus)))
   );
+  private readonly _version$ = new BehaviorSubject<string>('');
 
   private isConnectedSubscription!: Subscription;
 
@@ -87,9 +83,17 @@ export class ExpresssvpnService {
   get isActivated$(): Observable<boolean> {
     return this._statusPolling$.pipe(
       map((message) => {
+        const version = this._version$.getValue();
+
         if (this.toPlainString(message).includes(STRINGS.notActivated)) {
+          this.clearVersion();
           return false;
         }
+
+        if (!version) {
+          this.setVersion();
+        }
+
         return true;
       }),
       catchError(() => of(false))
@@ -185,5 +189,17 @@ export class ExpresssvpnService {
 
   private clearConnectToMessage(): void {
     this._connectedToMessage$.next('');
+  }
+
+  private setVersion(): void {
+    this.childProcess.exec(COMMANDS.version, (error, stdout, stderr) => {
+      const version = `${stdout}`;
+      console.log('version', version);
+      this._version$.next(version);
+    });
+  }
+
+  private clearVersion(): void {
+    this._version$.next('');
   }
 }

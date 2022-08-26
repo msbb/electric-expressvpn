@@ -4,4 +4,5 @@ export const COMMANDS = {
   connect: 'expressvpn connect',
   disconnect: 'expressvpn disconnect',
   locationList: 'expressvpn list all',
+  version: 'expressvpn --version',
 };

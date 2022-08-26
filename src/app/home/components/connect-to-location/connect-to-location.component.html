@@ -27,6 +27,7 @@
       (click)="connectToLocation(smartLocation.location)"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
+      <i class="mdi mdi-star-check"></i>
       {{
         ("connectToSmartLocation" | translate) +
           " (" +
@@ -48,6 +49,7 @@
       (click)="showRecommendedLocations(recommendedLocations)"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
+      <i class="mdi mdi-map-marker-star"></i>
       {{ "connectToRecommendedLocation" | translate }}
     </button>
   </div>
@@ -64,6 +66,7 @@
       (click)="showLocations(locations)"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
+      <i class="mdi mdi-map-marker"></i>
       {{ "connectToLocation" | translate }}
     </button>
   </div>
