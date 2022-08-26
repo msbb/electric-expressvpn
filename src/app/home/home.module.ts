@@ -5,9 +5,24 @@ import { HomeComponent } from './home.component';
 import { SharedModule } from '../shared/shared.module';
 import { ConnectToLocationComponent } from './components/connect-to-location/connect-to-location.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [HomeComponent, ConnectToLocationComponent],
-  imports: [CommonModule, SharedModule, HomeRoutingModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    HomeRoutingModule,
+    MatButtonModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
+  ],
 })
 export class HomeModule {}

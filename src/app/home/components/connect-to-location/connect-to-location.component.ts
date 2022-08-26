@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectionListChange } from '@angular/material/list';
+import { MatDrawer } from '@angular/material/sidenav';
 import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import {
   ExpressvpnLocation,
@@ -15,6 +18,9 @@ import {
   styleUrls: ['./connect-to-location.component.scss'],
 })
 export class ConnectToLocationComponent {
+  @ViewChild('locationDialog', { static: true })
+  locationDialog: TemplateRef<any>;
+
   readonly isInstalled$: Observable<boolean> =
     this.expressvpnService.isInstalled$;
   readonly isActivated$: Observable<boolean> =
@@ -35,38 +41,51 @@ export class ConnectToLocationComponent {
     this.expressvpnLocationsService.recommendedLocationsSortedByCountry$;
 
   readonly locationList$ = new BehaviorSubject<LocationsSortedByCountry>([]);
-  readonly showLocationList$ = new BehaviorSubject<boolean>(false);
-  readonly fadeOutLocationList$ = new BehaviorSubject<boolean>(false);
+  readonly selectedCountryCode$ = new BehaviorSubject<string>('');
+  readonly recommendedLocations$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly expressvpnLocationsService: ExpresssvpnLocationsService,
-    private readonly expressvpnService: ExpresssvpnService
+    private readonly expressvpnService: ExpresssvpnService,
+    private readonly dialog: MatDialog
   ) {}
 
   showRecommendedLocations(locations: LocationsSortedByCountry): void {
+    this.recommendedLocations$.next(true);
     this.locationList$.next(locations);
-    this.showLocationList();
+    this.openLocationsDialog();
   }
 
   showLocations(locations: LocationsSortedByCountry): void {
+    this.recommendedLocations$.next(false);
     this.locationList$.next(locations);
-    this.showLocationList();
+    this.openLocationsDialog();
   }
 
   connectToLocation(location: string) {
     this.expressvpnService.connectToLocation(location);
   }
 
-  hideLocationList(): void {
-    this.fadeOutLocationList$.next(true);
-
-    setTimeout(() => {
-      this.fadeOutLocationList$.next(false);
-      this.showLocationList$.next(false);
-    }, 80);
+  selectCountryCode(code: string): void {
+    this.selectedCountryCode$.next(code);
   }
 
-  private showLocationList(): void {
-    this.showLocationList$.next(true);
+  onCountrySelect(change: MatSelectionListChange) {
+    const selectedOption = change.options.find((option) => option.selected);
+    this.closeDialog();
+    this.connectToLocation(selectedOption.value);
+  }
+
+  private openLocationsDialog(): void {
+    this.dialog.open(this.locationDialog, { width: '500px' });
+  }
+
+  private closeDialog(): void {
+    this.clearCountryCode();
+    this.dialog.closeAll();
+  }
+
+  private clearCountryCode(): void {
+    this.selectedCountryCode$.next('');
   }
 }

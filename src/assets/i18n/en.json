@@ -6,5 +6,6 @@
   "disconnectingMessage": "Disconnecting",
   "connectToRecommendedLocation": "Connect to a recommended location",
   "connectToLocation": "Connect to a location",
-  "connectToSmartLocation": "Connect to smart location"
+  "connectToSmartLocation": "Connect to smart location",
+  "close": "Close"
 }

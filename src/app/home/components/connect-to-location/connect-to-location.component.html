@@ -18,9 +18,6 @@
     <ng-container
       *ngTemplateOutlet="locationsButton; context: { obs: obs }"
     ></ng-container>
-    <ng-container
-      *ngTemplateOutlet="locationList; context: { obs: obs }"
-    ></ng-container>
   </ng-container>
 </ng-container>
 
@@ -74,17 +71,50 @@
   </div>
 </ng-template>
 
-<ng-template #locationList let-obs="obs">
-  <div
-    class="backdrop"
-    [ngClass]="{ 'backdrop--fade-out': obs.fadeOutLocationList }"
-    *ngIf="obs.showLocationList"
-    (click)="hideLocationList()"
-  ></div>
-  <div class="list" [ngClass]="{ 'list--show': obs.showLocationList }">
-    <div *ngFor="let country of obs.locationList">
-      <span [class]="'fi fi-' + country.countryCode"></span>
-      {{ country.countryWithoutCode }}
+<ng-template #locationDialog>
+  <h2 matDialogTitle>
+    {{
+      (recommendedLocations$ | async)
+        ? ("connectToRecommendedLocation" | translate)
+        : ("connectToLocation" | translate)
+    }}
+  </h2>
+  <mat-dialog-content>
+    <div class="location-list">
+      <mat-accordion>
+        <mat-expansion-panel
+          *ngFor="let location of locationList$ | async"
+          [expanded]="(selectedCountryCode$ | async) === location.countryCode"
+          (opened)="selectCountryCode(location.countryCode)"
+          hideToggle
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title
+              ><span [class]="'fi fi-' + location.countryCode"></span
+              >{{ location.countryWithoutCode }}</mat-panel-title
+            >
+          </mat-expansion-panel-header>
+          <mat-selection-list
+            [multiple]="false"
+            (selectionChange)="onCountrySelect($event)"
+          >
+            <mat-list-option
+              *ngFor="let subLocation of location.locations"
+              [value]="subLocation.location"
+            >
+              <div mat-line>
+                <span [class]="'fi fi-' + location.countryCode"></span
+                >{{ subLocation.location }}
+              </div>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
-  </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button matDialogClose color="accent">
+      {{ "close" | translate }}
+    </button>
+  </mat-dialog-actions>
 </ng-template>
