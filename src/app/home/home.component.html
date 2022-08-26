@@ -5,9 +5,11 @@
     isActivated: isActivated$ | async,
     isConnected: isConnected$ | async,
     isConnecting: isConnecting$ | async,
-    isDisconnecting: isDisconnecting$ | async
+    isDisconnecting: isDisconnecting$ | async,
+    version: version$ | async
   } as obs"
 >
+  <span class="version caption">{{ obs.version }}}</span>
   <div
     class="status-gradient"
     [ngClass]="{

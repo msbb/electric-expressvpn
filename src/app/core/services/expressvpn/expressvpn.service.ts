@@ -126,6 +126,10 @@ export class ExpresssvpnService {
     );
   }
 
+  get version$(): Observable<string> {
+    return this._version$.asObservable();
+  }
+
   quickConnect(): void {
     this._isConnecting$.next(true);
 

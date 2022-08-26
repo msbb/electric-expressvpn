@@ -20,6 +20,7 @@ export class HomeComponent {
     this.expressvpnService.isConnecting$;
   readonly isDisconnecting$: Observable<boolean> =
     this.expressvpnService.isDisconnecting$;
+  readonly version$: Observable<string> = this.expressvpnService.version$;
 
   constructor(private readonly expressvpnService: ExpresssvpnService) {}
 
