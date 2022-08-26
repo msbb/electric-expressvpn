@@ -37,37 +37,45 @@
       ></span>
     </div>
   </div>
-  <div class="status-message">
-    <ng-container *ngIf="!obs.isInstalled">{{
-      "notInstalledMessage" | translate
-    }}</ng-container>
-    <ng-container *ngIf="obs.isInstalled && !obs.isActivated">{{
-      "notActivatedMessage" | translate
-    }}</ng-container>
-    <ng-container
-      *ngIf="
-        obs.isActivated &&
-        !obs.isConnected &&
-        !obs.isConnecting &&
-        !obs.isDisconnecting
-      "
-      >{{ "notConnectedMessage" | translate }}</ng-container
-    >
-    <ng-container
-      *ngIf="
-        obs.isActivated &&
-        obs.isConnected &&
-        !obs.isConnecting &&
-        !obs.isDisconnecting
-      "
-      >{{ connectedToMessage$ | async }}</ng-container
-    >
-    <ng-container *ngIf="obs.isConnecting">{{
-      "connectingMessage" | translate
-    }}</ng-container>
-    <ng-container *ngIf="obs.isDisconnecting">{{
-      "disconnectingMessage" | translate
-    }}</ng-container>
-  </div>
+  <ng-container
+    *ngTemplateOutlet="statusMessage; context: { obs: obs }"
+  ></ng-container>
   <app-connect-to-location></app-connect-to-location>
 </div>
+
+<ng-template #statusMessage let-obs="obs">
+  <div class="status-message">
+    <h2 class="mat-h2">
+      <ng-container *ngIf="!obs.isInstalled">{{
+        "notInstalledMessage" | translate
+      }}</ng-container>
+      <ng-container *ngIf="obs.isInstalled && !obs.isActivated">{{
+        "notActivatedMessage" | translate
+      }}</ng-container>
+      <ng-container
+        *ngIf="
+          obs.isActivated &&
+          !obs.isConnected &&
+          !obs.isConnecting &&
+          !obs.isDisconnecting
+        "
+        >{{ "notConnectedMessage" | translate }}</ng-container
+      >
+      <ng-container
+        *ngIf="
+          obs.isActivated &&
+          obs.isConnected &&
+          !obs.isConnecting &&
+          !obs.isDisconnecting
+        "
+        >{{ connectedToMessage$ | async }}</ng-container
+      >
+      <ng-container *ngIf="obs.isConnecting">{{
+        "connectingMessage" | translate
+      }}</ng-container>
+      <ng-container *ngIf="obs.isDisconnecting">{{
+        "disconnectingMessage" | translate
+      }}</ng-container>
+    </h2>
+  </div>
+</ng-template>

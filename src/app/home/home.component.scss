@@ -1,3 +1,7 @@
+.mat-h2 {
+    margin: 0;
+}
+
 .container {
     background-color: var(--ev-bg-color);
     position: fixed;
@@ -91,7 +95,5 @@
     width: 100%;
     padding: var(--padding-md);
     box-sizing: border-box;
-    font-size: var(--font-size-large);
-    color: var(--ev-base-font-color);
     text-align: center;
 }
