@@ -145,7 +145,7 @@ export class ExpresssvpnService {
         this._isConnecting$.next(true);
 
         this.childProcess.exec(
-          `${COMMANDS.connect} ${locationString}`,
+          `${COMMANDS.connect} "${locationString}"`,
           (error, stdout, stderr) => {
             if (error || stderr) {
               this._isConnecting$.next(false);
