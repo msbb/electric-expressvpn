@@ -1,7 +1,7 @@
 {
   "notInstalledMessage": "The ExpressVPN command-line is not available. Install ExpressVPN on your device to continue.",
   "notActivatedMessage": "Your ExpressVPN installation is not activated. Activate the installation by running 'expressvpn activate' in your terminal and entering your activation code.",
-  "notConnectedMessage": "Not connected.",
+  "notConnectedMessage": "Not connected",
   "connectingMessage": "Connecting",
   "disconnectingMessage": "Disconnecting",
   "connectToLocation": "Connect to location",

@@ -45,11 +45,21 @@
       "notActivatedMessage" | translate
     }}</ng-container>
     <ng-container
-      *ngIf="obs.isActivated && !obs.isConnected && !obs.isConnecting"
+      *ngIf="
+        obs.isActivated &&
+        !obs.isConnected &&
+        !obs.isConnecting &&
+        !obs.isDisconnecting
+      "
       >{{ "notConnectedMessage" | translate }}</ng-container
     >
     <ng-container
-      *ngIf="obs.isActivated && obs.isConnected && !obs.isDisconnecting"
+      *ngIf="
+        obs.isActivated &&
+        obs.isConnected &&
+        !obs.isConnecting &&
+        !obs.isDisconnecting
+      "
       >{{ connectedToMessage$ | async }}</ng-container
     >
     <ng-container *ngIf="obs.isConnecting">{{

@@ -17,6 +17,8 @@ import {
   BehaviorSubject,
   take,
   tap,
+  Subscription,
+  combineLatest,
 } from 'rxjs';
 import { COMMANDS, SETTINGS, STRINGS } from '../../constants';
 import { ExpressvpnLocation } from '../../models';
@@ -37,6 +39,8 @@ export class ExpresssvpnService {
   private readonly _statusPolling$ = timer(0, SETTINGS.statusPollingMs).pipe(
     switchMap(() => from(this.exec(COMMANDS.getStatus)))
   );
+
+  private isConnectedSubscription!: Subscription;
 
   constructor() {
     if (this.isElectron) {
@@ -129,16 +133,27 @@ export class ExpresssvpnService {
   }
 
   connectToLocation(locationString: string): void {
-    this._isConnecting$.next(true);
+    this.isConnectedSubscription = combineLatest([
+      this.isConnected$,
+      this.isDisconnecting$,
+    ]).subscribe(([isConnected, isDisconnecting]) => {
+      if (isConnected && !isDisconnecting) {
+        this.disconnect();
+      } else if (!isConnected && !isDisconnecting) {
+        this.isConnectedSubscription?.unsubscribe();
 
-    this.childProcess.exec(
-      `${COMMANDS.connect} ${locationString}`,
-      (error, stdout, stderr) => {
-        if (error || stderr) {
-          this._isConnecting$.next(false);
-        }
+        this._isConnecting$.next(true);
+
+        this.childProcess.exec(
+          `${COMMANDS.connect} ${locationString}`,
+          (error, stdout, stderr) => {
+            if (error || stderr) {
+              this._isConnecting$.next(false);
+            }
+          }
+        );
       }
-    );
+    });
   }
 
   disconnect(): void {
