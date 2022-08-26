@@ -158,8 +158,8 @@ export class ExpresssvpnService {
   private setConnectedToMessage(message: string): void {
     const startIndex = message.indexOf('Con');
     const startMessage = message.substring(startIndex, message.length);
-    const endIndex = startMessage.indexOf(')');
-    const finalMessage = startMessage.substring(0, endIndex + 1).trim();
+    const endIndex = startMessage.indexOf('');
+    const finalMessage = startMessage.substring(0, endIndex).trim();
 
     this._connectedToMessage$.pipe(take(1)).subscribe((connectedToMessage) => {
       if (connectedToMessage !== finalMessage) {
