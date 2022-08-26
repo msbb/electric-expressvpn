@@ -27,8 +27,9 @@
 <ng-template #smartLocationButton let-obs="obs">
   <div class="button-container" *ngIf="smartLocation$ | async as smartLocation">
     <button
+      mat-flat-button
+      color="primary"
       (click)="connectToLocation(smartLocation.location)"
-      class="ev-button"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
       {{
@@ -47,8 +48,9 @@
     *ngIf="recommendedLocationsSortedByCountry$ | async as recommendedLocations"
   >
     <button
+      mat-flat-button
+      color="accent"
       (click)="showRecommendedLocations(recommendedLocations)"
-      class="ev-button"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
       {{ "connectToRecommendedLocation" | translate }}
@@ -62,8 +64,9 @@
     *ngIf="locationsSortedByCountry$ | async as locations"
   >
     <button
+      mat-flat-button
+      color="warn"
       (click)="showLocations(locations)"
-      class="ev-button"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
       {{ "connectToLocation" | translate }}
