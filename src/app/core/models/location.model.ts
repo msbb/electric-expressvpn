@@ -6,8 +6,11 @@ interface ExpressvpnLocation {
   recommended: boolean;
 }
 
-interface LocationsSortedByCountry {
-  [key: string]: Array<ExpressvpnLocation>;
-}
+type LocationsSortedByCountry = Array<{
+  country: string;
+  countryWithoutCode: string;
+  countryCode: string;
+  locations: Array<ExpressvpnLocation>;
+}>;
 
 export { ExpressvpnLocation, LocationsSortedByCountry };

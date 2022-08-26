@@ -2,35 +2,86 @@
   *ngIf="{
     isActivated: isActivated$ | async,
     isConnecting: isConnecting$ | async,
-    isDisconnecting: isDisconnecting$ | async
+    isDisconnecting: isDisconnecting$ | async,
+    locationList: locationList$ | async,
+    showLocationList: showLocationList$ | async,
+    fadeOutLocationList: fadeOutLocationList$ | async
   } as obs"
 >
   <ng-container *ngIf="obs.isActivated">
-    <div
-      class="button-container"
-      *ngIf="smartLocation$ | async as smartLocation"
-    >
-      <button
-        (click)="connectToLocation(smartLocation.location)"
-        class="ev-button"
-        [disabled]="obs.isConnecting || obs.isDisconnecting"
-      >
-        {{
-          ("connectToSmartLocation" | translate) +
-            " (" +
-            smartLocation.location +
-            ")"
-        }}
-      </button>
-    </div>
-    <div class="button-container">
-      <button
-        (click)="showLocations()"
-        class="ev-button"
-        [disabled]="obs.isConnecting || obs.isDisconnecting"
-      >
-        {{ "connectToLocation" | translate }}
-      </button>
-    </div>
+    <ng-container
+      *ngTemplateOutlet="smartLocationButton; context: { obs: obs }"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="recommendedButton; context: { obs: obs }"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="locationsButton; context: { obs: obs }"
+    ></ng-container>
+    <ng-container
+      *ngTemplateOutlet="locationList; context: { obs: obs }"
+    ></ng-container>
   </ng-container>
 </ng-container>
+
+<ng-template #smartLocationButton let-obs="obs">
+  <div class="button-container" *ngIf="smartLocation$ | async as smartLocation">
+    <button
+      (click)="connectToLocation(smartLocation.location)"
+      class="ev-button"
+      [disabled]="obs.isConnecting || obs.isDisconnecting"
+    >
+      {{
+        ("connectToSmartLocation" | translate) +
+          " (" +
+          smartLocation.location +
+          ")"
+      }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #recommendedButton let-obs="obs">
+  <div
+    class="button-container"
+    *ngIf="recommendedLocationsSortedByCountry$ | async as recommendedLocations"
+  >
+    <button
+      (click)="showRecommendedLocations(recommendedLocations)"
+      class="ev-button"
+      [disabled]="obs.isConnecting || obs.isDisconnecting"
+    >
+      {{ "connectToRecommendedLocation" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #locationsButton let-obs="obs">
+  <div
+    class="button-container"
+    *ngIf="locationsSortedByCountry$ | async as locations"
+  >
+    <button
+      (click)="showLocations(locations)"
+      class="ev-button"
+      [disabled]="obs.isConnecting || obs.isDisconnecting"
+    >
+      {{ "connectToLocation" | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #locationList let-obs="obs">
+  <div
+    class="backdrop"
+    [ngClass]="{ 'backdrop--fade-out': obs.fadeOutLocationList }"
+    *ngIf="obs.showLocationList"
+    (click)="hideLocationList()"
+  ></div>
+  <div class="list" [ngClass]="{ 'list--show': obs.showLocationList }">
+    <div *ngFor="let country of obs.locationList">
+      <span [class]="'fi fi-' + country.countryCode"></span>
+      {{ country.countryWithoutCode }}
+    </div>
+  </div>
+</ng-template>

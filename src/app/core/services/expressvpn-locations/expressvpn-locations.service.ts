@@ -153,20 +153,34 @@ export class ExpresssvpnLocationsService {
   private sortLocationsByCountry(
     locations: Array<ExpressvpnLocation>
   ): LocationsSortedByCountry {
-    const locationsSortedByCountry: LocationsSortedByCountry = {};
+    let locationsSortedByCountry: LocationsSortedByCountry = [];
 
     locations
       .filter((location) => !(location.alias === 'smart'))
       .forEach((location) => {
-        if (locationsSortedByCountry[location.country]) {
-          locationsSortedByCountry[location.country].push(location);
+        const findInArray = locationsSortedByCountry.find(
+          (country) => country.countryCode === location.countryCode
+        );
+
+        if (findInArray) {
+          findInArray.locations.push(location);
         } else {
-          locationsSortedByCountry[location.country] = [location];
+          locationsSortedByCountry = [
+            ...locationsSortedByCountry,
+            {
+              country: location.country,
+              countryCode: location.countryCode,
+              countryWithoutCode: location.country
+                .substring(0, location.country.indexOf('('))
+                .trim(),
+              locations: [location],
+            },
+          ];
         }
       });
 
-    console.log(locationsSortedByCountry);
-
-    return locationsSortedByCountry;
+    return locationsSortedByCountry.sort((a, b) =>
+      a.country.toLowerCase().localeCompare(b.country.toLowerCase())
+    );
   }
 }

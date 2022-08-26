@@ -1,3 +1,6 @@
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
 /* You can add global styles to this file, and also import other style files */
 html, body {
   margin: 0;
@@ -8,6 +11,7 @@ html, body {
   top: 0;
   left: 0;
   font-family: Arial, Helvetica, sans-serif;
+  user-select: none;
 }
 
 :root {
@@ -25,17 +29,18 @@ html, body {
   --color-grey-4: #FBFBFB;
   --color-white: #fff;
   --color-black: #000;
+  --color-backdrop: rgba(0,0,0,0.3);
   --ev-base-font-color: #2C4655;
   --font-size-medium: 18px;
   --font-size-large: 20px;
   --padding-xsm: 8px;
-  --padding-sm: 16px;
-  --padding-md: 20px;
-  --status-gradient-height: 150px;
-  --status-icon-container-size: 150px;
+  --padding-sm: 14px;
+  --padding-md: 18px;
+  --status-gradient-height: 120px;
+  --status-icon-container-size: 100px;
   --status-icon-container-bg-image: linear-gradient(var(--color-white), var(--color-grey-2));
-  --status-icon-size: 80px;
-  --status-message-margin: 100px;
+  --status-icon-size: 60px;
+  --status-message-margin: 65px;
   --box-shadow-lightest: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   --box-shadow-light: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   --box-shadow-medium: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
@@ -72,4 +77,48 @@ html, body {
     color: var(--color-grey-0);
     opacity: 0.9;
   }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-backdrop);
+  cursor: pointer;
+  animation: fadein 0.1s;
+}
+
+.backdrop--fade-out {
+  animation: fadeOut 0.1s;
+}
+
+.list {
+  background-color: var(--color-white);
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  max-width: 300px;
+  height: 100%;
+  box-shadow: var(--box-shadow-heavy);
+  transition: transform 0.1s ease-out;
+  transform: translateX(110%);
+  display: flex;
+  flex-direction: column;
+}
+
+.list--show {
+  transform: translateX(0);
 }

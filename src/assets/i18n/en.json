@@ -4,6 +4,7 @@
   "notConnectedMessage": "Not connected",
   "connectingMessage": "Connecting",
   "disconnectingMessage": "Disconnecting",
-  "connectToLocation": "Connect to location",
+  "connectToRecommendedLocation": "Connect to a recommended location",
+  "connectToLocation": "Connect to a location",
   "connectToSmartLocation": "Connect to smart location"
 }
