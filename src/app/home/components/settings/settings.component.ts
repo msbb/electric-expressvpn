@@ -83,7 +83,10 @@ export class SettingsComponent {
   }
 
   private openLocationsDialog(): void {
-    this.dialog.open(this.locationDialog, { width: '500px' });
+    this.dialog.open(this.locationDialog, {
+      width: '500px',
+      maxWidth: 'calc(100vw - 32px)',
+    });
   }
 
   private closeDialog(): void {

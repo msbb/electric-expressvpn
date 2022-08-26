@@ -91,7 +91,10 @@ export class ConnectToLocationComponent {
   }
 
   private openLocationsDialog(): void {
-    const dialogRef = this.dialog.open(this.locationDialog, { width: '500px' });
+    const dialogRef = this.dialog.open(this.locationDialog, {
+      width: '500px',
+      maxWidth: 'calc(100vw - 32px)',
+    });
 
     this.dialogCloseSubscription = dialogRef.afterClosed().subscribe(() => {
       this.clearCountryCode();

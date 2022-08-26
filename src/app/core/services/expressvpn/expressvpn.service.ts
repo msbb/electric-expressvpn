@@ -198,8 +198,7 @@ export class ExpresssvpnService {
   private setVersion(): void {
     this.childProcess.exec(COMMANDS.version, (error, stdout, stderr) => {
       const version = `${stdout}`;
-      console.log('version', version);
-      this._version$.next(version);
+      this._version$.next(version.trim());
     });
   }
 
