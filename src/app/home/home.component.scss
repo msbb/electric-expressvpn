@@ -97,3 +97,10 @@
     box-sizing: border-box;
     text-align: center;
 }
+
+.app-buttons {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 100%;
+}

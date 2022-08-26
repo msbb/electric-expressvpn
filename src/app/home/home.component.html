@@ -40,7 +40,10 @@
   <ng-container
     *ngTemplateOutlet="statusMessage; context: { obs: obs }"
   ></ng-container>
-  <app-connect-to-location></app-connect-to-location>
+  <div class="app-buttons">
+    <app-connect-to-location></app-connect-to-location>
+    <app-settings></app-settings>
+  </div>
 </div>
 
 <ng-template #statusMessage let-obs="obs">

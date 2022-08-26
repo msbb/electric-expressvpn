@@ -7,5 +7,6 @@
   "connectToRecommendedLocation": "Recommended locations",
   "connectToLocation": "All locations",
   "connectToSmartLocation": "Smart location",
-  "close": "Close"
+  "close": "Close",
+  "settings": "Settings"
 }

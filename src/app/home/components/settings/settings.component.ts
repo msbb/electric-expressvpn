@@ -2,13 +2,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
 import { MatDrawer } from '@angular/material/sidenav';
-import {
-  BehaviorSubject,
-  combineLatest,
-  Observable,
-  Subscription,
-  take,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import {
   CountryWithLocations,
   ExpressvpnLocation,
@@ -20,11 +14,11 @@ import {
 } from '../../../core/services';
 
 @Component({
-  selector: 'app-connect-to-location',
-  templateUrl: './connect-to-location.component.html',
-  styleUrls: ['./connect-to-location.component.scss'],
+  selector: 'app-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss'],
 })
-export class ConnectToLocationComponent {
+export class SettingsComponent {
   @ViewChild('locationDialog', { static: true })
   locationDialog: TemplateRef<any>;
 
@@ -50,8 +44,6 @@ export class ConnectToLocationComponent {
   readonly locationList$ = new BehaviorSubject<LocationsSortedByCountry>([]);
   readonly selectedCountryCode$ = new BehaviorSubject<string>('');
   readonly recommendedLocations$ = new BehaviorSubject<boolean>(false);
-
-  private dialogCloseSubscription!: Subscription;
 
   constructor(
     private readonly expressvpnLocationsService: ExpresssvpnLocationsService,
@@ -91,12 +83,7 @@ export class ConnectToLocationComponent {
   }
 
   private openLocationsDialog(): void {
-    const dialogRef = this.dialog.open(this.locationDialog, { width: '500px' });
-
-    this.dialogCloseSubscription = dialogRef.afterClosed().subscribe(() => {
-      this.clearCountryCode();
-      this.dialogCloseSubscription?.unsubscribe();
-    });
+    this.dialog.open(this.locationDialog, { width: '500px' });
   }
 
   private closeDialog(): void {

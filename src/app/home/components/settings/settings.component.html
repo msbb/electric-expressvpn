@@ -8,69 +8,20 @@
 >
   <ng-container *ngIf="obs.isActivated">
     <ng-container
-      *ngTemplateOutlet="smartLocationButton; context: { obs: obs }"
-    ></ng-container>
-    <ng-container
-      *ngTemplateOutlet="recommendedButton; context: { obs: obs }"
-    ></ng-container>
-    <ng-container
-      *ngTemplateOutlet="locationsButton; context: { obs: obs }"
+      *ngTemplateOutlet="settingsButton; context: { obs: obs }"
     ></ng-container>
   </ng-container>
 </ng-container>
 
-<ng-template #smartLocationButton let-obs="obs">
-  <div
-    class="button-container button-container--first"
-    *ngIf="smartLocation$ | async as smartLocation"
-  >
+<ng-template #settingsButton let-obs="obs">
+  <div class="button-container" *ngIf="smartLocation$ | async as smartLocation">
     <button
       mat-raised-button
-      color="primary"
       (click)="connectToLocation(smartLocation.location)"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
-      <mat-icon>verified_user</mat-icon>
-      {{
-        ("connectToSmartLocation" | translate) +
-          " (" +
-          smartLocation.location +
-          ")"
-      }}
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #recommendedButton let-obs="obs">
-  <div
-    class="button-container"
-    *ngIf="recommendedLocationsSortedByCountry$ | async as recommendedLocations"
-  >
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="showRecommendedLocations(recommendedLocations)"
-      [disabled]="obs.isConnecting || obs.isDisconnecting"
-    >
-      <mat-icon>stars</mat-icon>
-      {{ "connectToRecommendedLocation" | translate }}
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #locationsButton let-obs="obs">
-  <div
-    class="button-container"
-    *ngIf="locationsSortedByCountry$ | async as locations"
-  >
-    <button
-      mat-raised-button
-      color="accent"
-      (click)="showLocations(locations)"
-      [disabled]="obs.isConnecting || obs.isDisconnecting"
-    >
-      <mat-icon>location_on</mat-icon>
-      {{ "connectToLocation" | translate }}
+      <mat-icon>settings</mat-icon>
+      {{ "settings" | translate }}
     </button>
   </div>
 </ng-template>
