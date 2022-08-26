@@ -81,27 +81,34 @@
     <div class="location-list">
       <mat-accordion>
         <mat-expansion-panel
-          *ngFor="let location of locationList$ | async"
-          [expanded]="(selectedCountryCode$ | async) === location.countryCode"
-          (opened)="selectCountryCode(location.countryCode)"
+          *ngFor="let countryWithLocations of locationList$ | async"
+          [expanded]="
+            (selectedCountryCode$ | async) === countryWithLocations.countryCode
+          "
+          (opened)="selectCountry(countryWithLocations)"
           hideToggle
         >
           <mat-expansion-panel-header>
             <mat-panel-title
-              ><span [class]="'fi fi-' + location.countryCode"></span
-              >{{ location.countryWithoutCode }}</mat-panel-title
+              ><span
+                [class]="'fi fi-' + countryWithLocations.countryCode"
+              ></span
+              >{{ countryWithLocations.countryWithoutCode }}</mat-panel-title
             >
           </mat-expansion-panel-header>
           <mat-selection-list
+            *ngIf="countryWithLocations.locations.length > 1"
             [multiple]="false"
             (selectionChange)="onCountrySelect($event)"
           >
             <mat-list-option
-              *ngFor="let subLocation of location.locations"
+              *ngFor="let subLocation of countryWithLocations.locations"
               [value]="subLocation.location"
             >
               <div mat-line>
-                <span [class]="'fi fi-' + location.countryCode"></span
+                <span
+                  [class]="'fi fi-' + countryWithLocations.countryCode"
+                ></span
                 >{{ subLocation.location }}
               </div>
             </mat-list-option>

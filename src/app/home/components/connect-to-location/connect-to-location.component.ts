@@ -4,6 +4,7 @@ import { MatSelectionListChange } from '@angular/material/list';
 import { MatDrawer } from '@angular/material/sidenav';
 import { BehaviorSubject, combineLatest, Observable, take } from 'rxjs';
 import {
+  CountryWithLocations,
   ExpressvpnLocation,
   LocationsSortedByCountry,
 } from '../../../core/models';
@@ -66,8 +67,13 @@ export class ConnectToLocationComponent {
     this.expressvpnService.connectToLocation(location);
   }
 
-  selectCountryCode(code: string): void {
-    this.selectedCountryCode$.next(code);
+  selectCountry(countryWithLocations: CountryWithLocations): void {
+    if (countryWithLocations.locations.length > 1) {
+      this.selectedCountryCode$.next(countryWithLocations.countryCode);
+    } else {
+      this.closeDialog();
+      this.connectToLocation(countryWithLocations.locations[0].location);
+    }
   }
 
   onCountrySelect(change: MatSelectionListChange) {
