@@ -105,9 +105,14 @@
     <div class="location-list">
       <mat-accordion>
         <mat-expansion-panel
-          *ngFor="let countryWithLocations of filteredLocationList$ | async"
+          *ngFor="
+            let countryWithLocations of filteredLocationList$
+              | async as filteredLocationList
+          "
           [expanded]="
-            (selectedCountryCode$ | async) === countryWithLocations.countryCode
+            (selectedCountryCode$ | async) ===
+              countryWithLocations.countryCode ||
+            filteredLocationList.length === 1
           "
           (opened)="selectCountry(countryWithLocations)"
           hideToggle
@@ -121,7 +126,6 @@
             >
           </mat-expansion-panel-header>
           <mat-selection-list
-            *ngIf="countryWithLocations.locations.length > 1"
             [multiple]="false"
             (selectionChange)="onCountrySelect($event)"
           >

@@ -8,6 +8,7 @@ import {
   Subscription,
   map,
   tap,
+  take,
 } from 'rxjs';
 import {
   CountryWithLocations,
@@ -52,21 +53,38 @@ export class ConnectToLocationComponent {
   readonly filteredLocationList$: Observable<LocationsSortedByCountry> =
     combineLatest([this.searchTerm$, this.locationList$]).pipe(
       map(([searchTerm, locationList]) =>
-        locationList.filter((countryWithLocations) => {
-          const countryIncludesSearchTerm = countryWithLocations.country
-            .toLocaleLowerCase()
-            .includes(searchTerm.toLocaleLowerCase());
-          const oneOfLocationsIncludesSearchTerm =
-            countryWithLocations.locations.find(
+        locationList
+          .filter((countryWithLocations) => {
+            const countryIncludesSearchTerm = countryWithLocations.country
+              .toLocaleLowerCase()
+              .includes(searchTerm.toLocaleLowerCase());
+            const oneOfLocationsIncludesSearchTerm =
+              countryWithLocations.locations.find(
+                (countryLocation) =>
+                  countryLocation.location
+                    .toLocaleLowerCase()
+                    .includes(searchTerm.toLocaleLowerCase()) ||
+                  countryLocation.country
+                    .toLocaleLowerCase()
+                    .includes(searchTerm.toLocaleLowerCase())
+              );
+
+            return (
+              countryIncludesSearchTerm || oneOfLocationsIncludesSearchTerm
+            );
+          })
+          .map((countryWithLocations) => ({
+            ...countryWithLocations,
+            locations: countryWithLocations.locations.filter(
               (countryLocation) =>
                 countryLocation.location
                   .toLocaleLowerCase()
-                  .includes(searchTerm) ||
-                countryLocation.country.toLocaleLowerCase().includes(searchTerm)
-            );
-
-          return countryIncludesSearchTerm || oneOfLocationsIncludesSearchTerm;
-        })
+                  .includes(searchTerm.toLocaleLowerCase()) ||
+                countryLocation.country
+                  .toLocaleLowerCase()
+                  .includes(searchTerm.toLocaleLowerCase())
+            ),
+          }))
       ),
       tap((filteredLocationList) => {
         if (filteredLocationList.length === 1) {
@@ -108,8 +126,12 @@ export class ConnectToLocationComponent {
     if (countryWithLocations.locations.length > 1) {
       this.selectedCountryCode$.next(countryWithLocations.countryCode);
     } else {
-      this.closeDialog();
-      this.connectToLocation(countryWithLocations.locations[0].location);
+      this.searchTerm$.pipe(take(1)).subscribe((searchTerm) => {
+        if (!searchTerm) {
+          this.closeDialog();
+          this.connectToLocation(countryWithLocations.locations[0].location);
+        }
+      });
     }
   }
 
