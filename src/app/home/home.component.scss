@@ -117,3 +117,9 @@
     display: flex;
     justify-content: center;
 }
+
+.mat-h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

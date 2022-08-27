@@ -29,7 +29,41 @@
   <h2 matDialogTitle>
     {{ "Preferences" | translate }}
   </h2>
-  <mat-dialog-content> settings </mat-dialog-content>
+  <mat-dialog-content>
+    <mat-list>
+      <mat-list-item>
+        <mat-slide-toggle
+          [ngModel]="autoConnect$ | async"
+          (ngModelChange)="autoConnectChange($event)"
+          >{{ "auto_connect" | translate }}</mat-slide-toggle
+        >
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-slide-toggle
+          [ngModel]="blockTrackers$ | async"
+          (ngModelChange)="blockTrackersChange($event)"
+          >{{ "block_trackers" | translate }}</mat-slide-toggle
+        >
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-slide-toggle
+          [ngModel]="desktopNotifications$ | async"
+          (ngModelChange)="desktopNotificationsChange($event)"
+          >{{ "desktop_notifications" | translate }}</mat-slide-toggle
+        >
+      </mat-list-item>
+      <mat-divider></mat-divider>
+      <mat-list-item>
+        <mat-slide-toggle
+          [ngModel]="disableIpv6$ | async"
+          (ngModelChange)="disableIpv6Change($event)"
+          >{{ "disable_ipv6" | translate }}</mat-slide-toggle
+        >
+      </mat-list-item>
+    </mat-list>
+  </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button matDialogClose color="accent">
       {{ "close" | translate }}

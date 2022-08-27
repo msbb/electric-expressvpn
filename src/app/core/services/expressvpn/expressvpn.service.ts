@@ -150,16 +150,18 @@ export class ExpresssvpnService {
       } else if (!isConnected && !isDisconnecting) {
         this.isConnectedSubscription?.unsubscribe();
 
-        this._isConnecting$.next(true);
-
-        this.childProcess.exec(
-          `${COMMANDS.connect} "${locationString}"`,
-          (error, stdout, stderr) => {
-            if (error || stderr) {
-              this._isConnecting$.next(false);
+        setTimeout(() => {
+          this.childProcess.exec(
+            `${COMMANDS.connect} "${locationString}"`,
+            (error, stdout, stderr) => {
+              if (error || stderr) {
+                this._isConnecting$.next(false);
+              }
             }
-          }
-        );
+          );
+        }, 500);
+
+        this._isConnecting$.next(true);
       }
     });
   }

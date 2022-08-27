@@ -10,5 +10,12 @@
   "close": "Close",
   "settings": "Settings",
   "searchLocation": "Search location",
-  "preferences": "Preferences"
+  "searchRecommendedLocation": "Search recommended location",
+  "preferences": "Preferences",
+  "auto_connect": "Auto connect",
+  "block_trackers": "Block trackers",
+  "desktop_notifications": "Desktop notifications",
+  "disable_ipv6": "Disable IPv6",
+  "network_lock": "Network lock",
+  "preferred_protocol": "Preferred protocol"
 }

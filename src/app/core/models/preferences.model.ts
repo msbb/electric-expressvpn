@@ -6,4 +6,6 @@ type ExpressvpnPreferences = Array<{
   reconnectOnChange?: boolean;
 }>;
 
-export { ExpressvpnPreferences };
+type NetworkLock = 'off' | 'default';
+
+export { ExpressvpnPreferences, NetworkLock };

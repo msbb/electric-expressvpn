@@ -76,15 +76,12 @@
 </ng-template>
 
 <ng-template #locationDialog>
-  <h2 matDialogTitle>
-    {{
+  <mat-form-field class="search-location" appearance="fill" matDialogTitle>
+    <mat-label>{{
       (recommendedLocations$ | async)
-        ? ("connectToRecommendedLocation" | translate)
-        : ("connectToLocation" | translate)
-    }}
-  </h2>
-  <mat-form-field class="search-location" appearance="fill">
-    <mat-label>{{ "searchLocation" | translate }}</mat-label>
+        ? ("searchRecommendedLocation" | translate)
+        : ("searchLocation" | translate)
+    }}</mat-label>
     <input
       matInput
       type="text"

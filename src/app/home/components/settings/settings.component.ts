@@ -7,6 +7,7 @@ import {
   CountryWithLocations,
   ExpressvpnLocation,
   LocationsSortedByCountry,
+  NetworkLock,
 } from '../../../core/models';
 import {
   ExpresssvpnLocationsService,
@@ -35,6 +36,12 @@ export class SettingsComponent {
   readonly isDisconnecting$: Observable<boolean> =
     this.expressvpnService.isDisconnecting$;
 
+  readonly autoConnect$ = new BehaviorSubject<boolean>(false);
+  readonly blockTrackers$ = new BehaviorSubject<boolean>(false);
+  readonly desktopNotifications$ = new BehaviorSubject<boolean>(false);
+  readonly disableIpv6$ = new BehaviorSubject<boolean>(false);
+  readonly networkLock$ = new BehaviorSubject<NetworkLock>('off');
+
   constructor(
     private readonly expressvpnService: ExpresssvpnService,
     private readonly dialog: MatDialog
@@ -49,5 +56,25 @@ export class SettingsComponent {
 
   closeDialog(): void {
     this.dialog.closeAll();
+  }
+
+  autoConnectChange(value: boolean) {
+    this.autoConnect$.next(value);
+  }
+
+  blockTrackersChange(value: boolean) {
+    this.blockTrackers$.next(value);
+  }
+
+  desktopNotificationsChange(value: boolean) {
+    this.desktopNotifications$.next(value);
+  }
+
+  disableIpv6Change(value: boolean) {
+    this.disableIpv6$.next(value);
+  }
+
+  networkLockChange(value: NetworkLock) {
+    this.networkLock$.next(value);
   }
 }
