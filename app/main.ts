@@ -8,7 +8,7 @@ const args = process.argv.slice(1),
 
 function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
-  const optimalWidth = 440;
+  const optimalWidth = 420;
   const optimalHeight = 600;
   // Create the browser window.
   win = new BrowserWindow({
