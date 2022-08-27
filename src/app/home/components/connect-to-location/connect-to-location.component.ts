@@ -125,13 +125,6 @@ export class ConnectToLocationComponent {
   selectCountry(countryWithLocations: CountryWithLocations): void {
     if (countryWithLocations.locations.length > 1) {
       this.selectedCountryCode$.next(countryWithLocations.countryCode);
-    } else {
-      this.searchTerm$.pipe(take(1)).subscribe((searchTerm) => {
-        if (!searchTerm) {
-          this.closeDialog();
-          this.connectToLocation(countryWithLocations.locations[0].location);
-        }
-      });
     }
   }
 
@@ -147,6 +140,28 @@ export class ConnectToLocationComponent {
 
   clearSearchTerm(): void {
     this.searchTerm$.next('');
+  }
+
+  expansionPanelClick(countryWithLocations: CountryWithLocations): void {
+    this.locationList$.pipe(take(1)).subscribe((locationList) => {
+      const locationInList = locationList.find(
+        (location) => location.countryCode === countryWithLocations.countryCode
+      );
+
+      if (locationInList.locations.length === 1) {
+        this.closeDialog();
+        this.connectToLocation(countryWithLocations.locations[0].location);
+      }
+    });
+  }
+
+  getLocationFromList(
+    locationList: LocationsSortedByCountry,
+    country: CountryWithLocations
+  ): CountryWithLocations {
+    return locationList.find(
+      (location) => location.countryCode === country.countryCode
+    );
   }
 
   private openLocationsDialog(): void {
