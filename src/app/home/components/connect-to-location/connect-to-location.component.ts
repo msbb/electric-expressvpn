@@ -1,13 +1,13 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectionListChange } from '@angular/material/list';
-import { MatDrawer } from '@angular/material/sidenav';
 import {
   BehaviorSubject,
   combineLatest,
   Observable,
   Subscription,
-  take,
+  map,
+  tap,
 } from 'rxjs';
 import {
   CountryWithLocations,
@@ -47,7 +47,36 @@ export class ConnectToLocationComponent {
   readonly recommendedLocationsSortedByCountry$ =
     this.expressvpnLocationsService.recommendedLocationsSortedByCountry$;
 
+  readonly searchTerm$ = new BehaviorSubject<string>('');
   readonly locationList$ = new BehaviorSubject<LocationsSortedByCountry>([]);
+  readonly filteredLocationList$: Observable<LocationsSortedByCountry> =
+    combineLatest([this.searchTerm$, this.locationList$]).pipe(
+      map(([searchTerm, locationList]) =>
+        locationList.filter((countryWithLocations) => {
+          const countryIncludesSearchTerm = countryWithLocations.country
+            .toLocaleLowerCase()
+            .includes(searchTerm.toLocaleLowerCase());
+          const oneOfLocationsIncludesSearchTerm =
+            countryWithLocations.locations.find(
+              (countryLocation) =>
+                countryLocation.location
+                  .toLocaleLowerCase()
+                  .includes(searchTerm) ||
+                countryLocation.country.toLocaleLowerCase().includes(searchTerm)
+            );
+
+          return countryIncludesSearchTerm || oneOfLocationsIncludesSearchTerm;
+        })
+      ),
+      tap((filteredLocationList) => {
+        if (filteredLocationList.length === 1) {
+          this.selectCountry(filteredLocationList[0]);
+        } else {
+          this.clearCountryCode();
+        }
+      })
+    );
+
   readonly selectedCountryCode$ = new BehaviorSubject<string>('');
   readonly recommendedLocations$ = new BehaviorSubject<boolean>(false);
 
@@ -90,6 +119,14 @@ export class ConnectToLocationComponent {
     this.connectToLocation(selectedOption.value);
   }
 
+  setSearchTerm(term: string): void {
+    this.searchTerm$.next(term);
+  }
+
+  clearSearchTerm(): void {
+    this.searchTerm$.next('');
+  }
+
   private openLocationsDialog(): void {
     const dialogRef = this.dialog.open(this.locationDialog, {
       width: '500px',
@@ -97,17 +134,22 @@ export class ConnectToLocationComponent {
     });
 
     this.dialogCloseSubscription = dialogRef.afterClosed().subscribe(() => {
-      this.clearCountryCode();
+      this.clear();
       this.dialogCloseSubscription?.unsubscribe();
     });
   }
 
   private closeDialog(): void {
-    this.clearCountryCode();
+    this.clear();
     this.dialog.closeAll();
   }
 
   private clearCountryCode(): void {
     this.selectedCountryCode$.next('');
+  }
+
+  private clear(): void {
+    this.clearCountryCode();
+    this.clearSearchTerm();
   }
 }

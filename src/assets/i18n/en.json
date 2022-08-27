@@ -8,5 +8,7 @@
   "connectToLocation": "All locations",
   "connectToSmartLocation": "Smart location",
   "close": "Close",
-  "settings": "Settings"
+  "settings": "Settings",
+  "searchLocation": "Search location",
+  "preferences": "Preferences"
 }

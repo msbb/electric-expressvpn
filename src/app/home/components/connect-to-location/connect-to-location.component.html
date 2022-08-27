@@ -83,11 +83,29 @@
         : ("connectToLocation" | translate)
     }}
   </h2>
+  <mat-form-field class="search-location" appearance="fill">
+    <mat-label>{{ "searchLocation" | translate }}</mat-label>
+    <input
+      matInput
+      type="text"
+      [ngModel]="searchTerm$ | async"
+      (ngModelChange)="setSearchTerm($event)"
+    />
+    <button
+      *ngIf="searchTerm$ | async"
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clearSearchTerm()"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
   <mat-dialog-content>
     <div class="location-list">
       <mat-accordion>
         <mat-expansion-panel
-          *ngFor="let countryWithLocations of locationList$ | async"
+          *ngFor="let countryWithLocations of filteredLocationList$ | async"
           [expanded]="
             (selectedCountryCode$ | async) === countryWithLocations.countryCode
           "

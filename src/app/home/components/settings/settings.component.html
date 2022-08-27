@@ -2,8 +2,7 @@
   *ngIf="{
     isActivated: isActivated$ | async,
     isConnecting: isConnecting$ | async,
-    isDisconnecting: isDisconnecting$ | async,
-    locationList: locationList$ | async
+    isDisconnecting: isDisconnecting$ | async
   } as obs"
 >
   <ng-container *ngIf="obs.isActivated">
@@ -14,66 +13,23 @@
 </ng-container>
 
 <ng-template #settingsButton let-obs="obs">
-  <div class="button-container" *ngIf="smartLocation$ | async as smartLocation">
+  <div class="button-container">
     <button
       mat-raised-button
-      (click)="connectToLocation(smartLocation.location)"
+      (click)="openDialog()"
       [disabled]="obs.isConnecting || obs.isDisconnecting"
     >
       <mat-icon>settings</mat-icon>
-      {{ "settings" | translate }}
+      {{ "preferences" | translate }}
     </button>
   </div>
 </ng-template>
 
-<ng-template #locationDialog>
+<ng-template #settingsDialog>
   <h2 matDialogTitle>
-    {{
-      (recommendedLocations$ | async)
-        ? ("connectToRecommendedLocation" | translate)
-        : ("connectToLocation" | translate)
-    }}
+    {{ "Preferences" | translate }}
   </h2>
-  <mat-dialog-content>
-    <div class="location-list">
-      <mat-accordion>
-        <mat-expansion-panel
-          *ngFor="let countryWithLocations of locationList$ | async"
-          [expanded]="
-            (selectedCountryCode$ | async) === countryWithLocations.countryCode
-          "
-          (opened)="selectCountry(countryWithLocations)"
-          hideToggle
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title
-              ><span
-                [class]="'fi fi-' + countryWithLocations.countryCode"
-              ></span
-              >{{ countryWithLocations.countryWithoutCode }}</mat-panel-title
-            >
-          </mat-expansion-panel-header>
-          <mat-selection-list
-            *ngIf="countryWithLocations.locations.length > 1"
-            [multiple]="false"
-            (selectionChange)="onCountrySelect($event)"
-          >
-            <mat-list-option
-              *ngFor="let subLocation of countryWithLocations.locations"
-              [value]="subLocation.location"
-            >
-              <div mat-line>
-                <span
-                  [class]="'fi fi-' + countryWithLocations.countryCode"
-                ></span
-                >{{ subLocation.location }}
-              </div>
-            </mat-list-option>
-          </mat-selection-list>
-        </mat-expansion-panel>
-      </mat-accordion>
-    </div>
-  </mat-dialog-content>
+  <mat-dialog-content> settings </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button matDialogClose color="accent">
       {{ "close" | translate }}
