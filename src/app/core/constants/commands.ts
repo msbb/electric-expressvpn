@@ -5,4 +5,6 @@ export const COMMANDS = {
   disconnect: 'expressvpn disconnect',
   locationList: 'expressvpn list all',
   version: 'expressvpn --version',
+  preferences: 'expressvpn preferences',
+  setPreference: 'expressvpn preferences set',
 };

@@ -1,6 +1,6 @@
 import { ExpressvpnPreferences } from '../models';
 
-export const preferences: ExpressvpnPreferences = [
+export const preferences = [
   { option: 'auto_connect', options: 'boolean' },
   { option: 'block_trackers', options: 'boolean', reconnectOnChange: true },
   { option: 'desktop_notifications', options: 'boolean' },

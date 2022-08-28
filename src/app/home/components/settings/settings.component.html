@@ -26,47 +26,115 @@
 </ng-template>
 
 <ng-template #settingsDialog>
-  <h2 matDialogTitle>
-    {{ "Preferences" | translate }}
-  </h2>
-  <mat-dialog-content>
-    <mat-list>
-      <mat-list-item>
+  <ng-container
+    *ngIf="{
+      isConnected: isConnected$ | async,
+      preferencesDisabled: preferencesDisabled$ | async
+    } as obs"
+  >
+    <h2 matDialogTitle>
+      {{ "Preferences" | translate }}
+    </h2>
+    <mat-dialog-content>
+      <div class="preference-list-item">
         <mat-slide-toggle
           [ngModel]="autoConnect$ | async"
           (ngModelChange)="autoConnectChange($event)"
+          [disabled]="obs.preferencesDisabled"
           >{{ "auto_connect" | translate }}</mat-slide-toggle
         >
-      </mat-list-item>
+      </div>
       <mat-divider></mat-divider>
-      <mat-list-item>
+      <div class="preference-list-item">
         <mat-slide-toggle
           [ngModel]="blockTrackers$ | async"
           (ngModelChange)="blockTrackersChange($event)"
+          [disabled]="obs.isConnected || obs.preferencesDisabled"
           >{{ "block_trackers" | translate }}</mat-slide-toggle
         >
-      </mat-list-item>
+      </div>
       <mat-divider></mat-divider>
-      <mat-list-item>
+      <div class="preference-list-item">
         <mat-slide-toggle
           [ngModel]="desktopNotifications$ | async"
           (ngModelChange)="desktopNotificationsChange($event)"
+          [disabled]="obs.preferencesDisabled"
           >{{ "desktop_notifications" | translate }}</mat-slide-toggle
         >
-      </mat-list-item>
+      </div>
       <mat-divider></mat-divider>
-      <mat-list-item>
+      <div class="preference-list-item">
         <mat-slide-toggle
           [ngModel]="disableIpv6$ | async"
           (ngModelChange)="disableIpv6Change($event)"
+          [disabled]="obs.isConnected || obs.preferencesDisabled"
           >{{ "disable_ipv6" | translate }}</mat-slide-toggle
         >
-      </mat-list-item>
-    </mat-list>
-  </mat-dialog-content>
-  <mat-dialog-actions align="end">
-    <button mat-button matDialogClose color="accent">
-      {{ "close" | translate }}
-    </button>
-  </mat-dialog-actions>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="preference-list-item">
+        <mat-slide-toggle
+          [ngModel]="sendDiagnostics$ | async"
+          (ngModelChange)="sendDiagnosticsChange($event)"
+          [disabled]="obs.preferencesDisabled"
+          >{{ "send_diagnostics" | translate }}</mat-slide-toggle
+        >
+      </div>
+      <mat-divider></mat-divider>
+      <div class="preference-list-item">
+        <span
+          class="toggle-group-text"
+          [ngClass]="{
+            'toggle-group-text--disabled':
+              obs.isConnected || obs.preferencesDisabled
+          }"
+        >
+          {{ "network_lock" | translate }}
+        </span>
+        <mat-button-toggle-group
+          [disabled]="obs.isConnected || obs.preferencesDisabled"
+          [ngModel]="networkLock$ | async"
+          (ngModelChange)="networkLockChange($event)"
+        >
+          <mat-button-toggle value="off">{{
+            "off" | translate
+          }}</mat-button-toggle>
+          <mat-button-toggle value="default">{{
+            "default" | translate
+          }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="preference-list-item">
+        <span
+          class="toggle-group-text"
+          [ngClass]="{
+            'toggle-group-text--disabled': obs.preferencesDisabled
+          }"
+        >
+          {{ "preferred_protocol" | translate }}
+        </span>
+        <mat-button-toggle-group
+          [disabled]="obs.preferencesDisabled"
+          [ngModel]="preferredProtocol$ | async"
+          (ngModelChange)="preferredProtocolChange($event)"
+        >
+          <mat-button-toggle value="auto">{{
+            "auto" | translate
+          }}</mat-button-toggle>
+          <mat-button-toggle value="udp">{{
+            "udp" | translate
+          }}</mat-button-toggle>
+          <mat-button-toggle value="tcp">{{
+            "tcp" | translate
+          }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button matDialogClose color="accent">
+        {{ "close" | translate }}
+      </button>
+    </mat-dialog-actions>
+  </ng-container>
 </ng-template>

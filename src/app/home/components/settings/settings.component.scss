@@ -1,0 +1,13 @@
+::ng-deep {
+    .preference-list-item {
+        margin: 12px 0;
+    }
+
+    .toggle-group-text {
+        margin-right: 12px;
+    }
+
+    .toggle-group-text--disabled {
+        opacity: 0.38;
+    }
+}

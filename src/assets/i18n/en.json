@@ -17,5 +17,11 @@
   "desktop_notifications": "Desktop notifications",
   "disable_ipv6": "Disable IPv6",
   "network_lock": "Network lock",
-  "preferred_protocol": "Preferred protocol"
+  "preferred_protocol": "Preferred protocol",
+  "send_diagnostics": "Send diagnostics",
+  "off": "Off",
+  "default": "Default",
+  "auto": "Auto",
+  "udp": "UDP",
+  "tcp": "TCP"
 }
