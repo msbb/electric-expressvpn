@@ -69,7 +69,10 @@ export class ExpresssvpnService {
       switchMap(() =>
         from(this.exec(COMMANDS.isInstalled)).pipe(
           map((message) => {
-            if (this.toPlainString(message).includes(STRINGS.isInstalled)) {
+            const consoleMessage = (message as any)?.stdout || message;
+            if (
+              this.toPlainString(consoleMessage).includes(STRINGS.isInstalled)
+            ) {
               return true;
             }
             return false;
@@ -83,9 +86,10 @@ export class ExpresssvpnService {
   get isActivated$(): Observable<boolean> {
     return this._statusPolling$.pipe(
       map((message) => {
+        const consoleMessage = (message as any)?.stdout || message;
         const version = this._version$.getValue();
 
-        if (this.toPlainString(message).includes(STRINGS.notActivated)) {
+        if (this.toPlainString(consoleMessage).includes(STRINGS.notActivated)) {
           this.clearVersion();
           return false;
         }
@@ -103,7 +107,8 @@ export class ExpresssvpnService {
   get isConnected$(): Observable<boolean> {
     return this._statusPolling$.pipe(
       map((message) => {
-        const plainMessage = this.toPlainString(message);
+        const consoleMessage = (message as any)?.stdout || message;
+        const plainMessage = this.toPlainString(consoleMessage);
         const connectedToMessage = this._connectedToMessage$.getValue();
 
         if (plainMessage.includes(STRINGS.notConnected)) {
@@ -116,7 +121,7 @@ export class ExpresssvpnService {
         } else if (plainMessage.includes(STRINGS.connected)) {
           this._isConnecting$.next(false);
           if (!connectedToMessage) {
-            this.setConnectedToMessage(`${message}`);
+            this.setConnectedToMessage(`${consoleMessage}`);
           }
           return true;
         }

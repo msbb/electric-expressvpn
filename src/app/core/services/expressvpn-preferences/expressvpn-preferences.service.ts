@@ -49,36 +49,6 @@ export class ExpresssvpnPreferencesService {
     return !!(window && window.process && window.process.type);
   }
 
-  get preferences$(): Observable<ExpressvpnPreferences> {
-    return from(this.exec(COMMANDS.preferences)).pipe(
-      map((preferences) => {
-        const preferencesMessage = `${preferences}`;
-        if (preferencesMessage) {
-          const preferencesToReturn = [];
-          const splitPreferences: Array<string> = preferencesMessage
-            .replace(/\t/gi, ' ')
-            .replace(/\n/gi, ' ')
-            .split(' ')
-            .filter((value) => !!value);
-
-          splitPreferences.forEach((pString, index) => {
-            if (index % 2 === 0) {
-              preferencesToReturn.push({ preference: pString });
-            } else {
-              preferencesToReturn[preferencesToReturn.length - 1].value =
-                pString;
-            }
-          });
-
-          return preferencesToReturn;
-        } else {
-          return [];
-        }
-      }),
-      catchError(() => of([]))
-    );
-  }
-
   get preferencesDisabled$(): Observable<boolean> {
     return this._preferencesDisabled$.asObservable();
   }
@@ -96,7 +66,6 @@ export class ExpresssvpnPreferencesService {
         if (error || stderr) {
           this._preferencesDisabled$.next(false);
         } else if (stdout) {
-          console.log('out', stdout);
           this._preferencesDisabled$.next(false);
           this.refreshPreferences();
         }
@@ -109,7 +78,8 @@ export class ExpresssvpnPreferencesService {
       .pipe(
         take(1),
         tap((preferences) => {
-          const preferencesMessage = `${preferences}`;
+          const consoleMessage = (preferences as any)?.stdout || preferences;
+          const preferencesMessage = `${consoleMessage}`;
           if (preferencesMessage) {
             const preferencesToReturn = [];
             const splitPreferences: Array<string> = preferencesMessage

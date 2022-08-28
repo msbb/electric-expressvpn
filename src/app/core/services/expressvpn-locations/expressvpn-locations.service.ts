@@ -34,8 +34,10 @@ export class ExpresssvpnLocationsService {
   get locations$(): Observable<Array<ExpressvpnLocation>> {
     return from(this.exec(COMMANDS.locationList)).pipe(
       map((locationsMessage) => {
-        if (locationsMessage) {
-          return this.mapLocationMessageToLocations(`${locationsMessage}`);
+        const consoleMessage =
+          (locationsMessage as any)?.stdout || locationsMessage;
+        if (consoleMessage) {
+          return this.mapLocationMessageToLocations(`${consoleMessage}`);
         } else {
           return [];
         }
