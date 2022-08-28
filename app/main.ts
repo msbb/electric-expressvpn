@@ -1,6 +1,8 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
+import { webContents, Tray } from '@electron/remote';
+import * as remoteMain from '@electron/remote/main';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -11,6 +13,9 @@ function createWindow(): BrowserWindow {
   const optimalWidth = 420;
   const optimalHeight = 620;
   // Create the browser window.
+
+  remoteMain.initialize();
+
   win = new BrowserWindow({
     x: 0,
     y: 0,
@@ -26,6 +31,8 @@ function createWindow(): BrowserWindow {
     },
     icon: path.join(__dirname, 'assets', 'icons', 'favicon.png'),
   });
+
+  remoteMain.enable(win.webContents);
 
   if (serve) {
     const debug = require('electron-debug');

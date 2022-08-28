@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { combineLatest, Observable, take } from 'rxjs';
-import { ExpresssvpnService } from '../core/services';
+import { ExpresssvpnService, TrayService } from '../core/services';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +22,10 @@ export class HomeComponent {
     this.expressvpnService.isDisconnecting$;
   readonly version$: Observable<string> = this.expressvpnService.version$;
 
-  constructor(private readonly expressvpnService: ExpresssvpnService) {}
+  constructor(
+    private readonly expressvpnService: ExpresssvpnService,
+    private readonly trayService: TrayService
+  ) {}
 
   iconClick(): void {
     combineLatest([
