@@ -23,5 +23,6 @@
   "default": "Default",
   "auto": "Auto",
   "udp": "UDP",
-  "tcp": "TCP"
+  "tcp": "TCP",
+  "noResults": "No results"
 }

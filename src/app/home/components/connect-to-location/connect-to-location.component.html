@@ -101,50 +101,56 @@
   <mat-dialog-content>
     <div class="location-list">
       <mat-accordion *ngIf="locationList$ | async as locationList">
-        <div
-          *ngFor="
-            let countryWithLocations of filteredLocationList$
-              | async as filteredLocationList
-          "
-          (click)="expansionPanelClick(countryWithLocations)"
+        <ng-container
+          *ngIf="filteredLocationList$ | async as filteredLocationList"
         >
-          <mat-expansion-panel
-            [expanded]="
-              (selectedCountryCode$ | async) ===
-                countryWithLocations.countryCode ||
-              (filteredLocationList.length === 1 &&
-                getLocationFromList(locationList, countryWithLocations)
-                  .locations.length > 1)
-            "
-            (opened)="selectCountry(countryWithLocations)"
-            hideToggle
+          <span *ngIf="filteredLocationList.length === 0">{{
+            "noResults" | translate
+          }}</span>
+          <div
+            *ngFor="let countryWithLocations of filteredLocationList"
+            (click)="expansionPanelClick(countryWithLocations)"
           >
-            <mat-expansion-panel-header>
-              <mat-panel-title
-                ><span
-                  [class]="'fi fi-' + countryWithLocations.countryCode"
-                ></span
-                >{{ countryWithLocations.countryWithoutCode }}</mat-panel-title
-              >
-            </mat-expansion-panel-header>
-            <mat-selection-list
-              [multiple]="false"
-              (selectionChange)="onCountrySelect($event)"
+            <mat-expansion-panel
+              [expanded]="
+                (selectedCountryCode$ | async) ===
+                  countryWithLocations.countryCode ||
+                (filteredLocationList.length === 1 &&
+                  getLocationFromList(locationList, countryWithLocations)
+                    .locations.length > 1)
+              "
+              (opened)="selectCountry(countryWithLocations)"
+              hideToggle
             >
-              <mat-list-option
-                *ngFor="let subLocation of countryWithLocations.locations"
-                [value]="subLocation.location"
-              >
-                <div mat-line>
-                  <span
+              <mat-expansion-panel-header>
+                <mat-panel-title
+                  ><span
                     [class]="'fi fi-' + countryWithLocations.countryCode"
                   ></span
-                  >{{ subLocation.location }}
-                </div>
-              </mat-list-option>
-            </mat-selection-list>
-          </mat-expansion-panel>
-        </div>
+                  >{{
+                    countryWithLocations.countryWithoutCode
+                  }}</mat-panel-title
+                >
+              </mat-expansion-panel-header>
+              <mat-selection-list
+                [multiple]="false"
+                (selectionChange)="onCountrySelect($event)"
+              >
+                <mat-list-option
+                  *ngFor="let subLocation of countryWithLocations.locations"
+                  [value]="subLocation.location"
+                >
+                  <div mat-line>
+                    <span
+                      [class]="'fi fi-' + countryWithLocations.countryCode"
+                    ></span
+                    >{{ subLocation.location }}
+                  </div>
+                </mat-list-option>
+              </mat-selection-list>
+            </mat-expansion-panel>
+          </div>
+        </ng-container>
       </mat-accordion>
     </div>
   </mat-dialog-content>
