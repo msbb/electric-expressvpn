@@ -82,15 +82,6 @@
       </div>
       <mat-divider></mat-divider>
       <div class="preference-list-item">
-        <span
-          class="toggle-group-text"
-          [ngClass]="{
-            'toggle-group-text--disabled':
-              obs.isConnected || obs.preferencesDisabled
-          }"
-        >
-          {{ "network_lock" | translate }}
-        </span>
         <mat-button-toggle-group
           [disabled]="obs.isConnected || obs.preferencesDisabled"
           [ngModel]="networkLock$ | async"
@@ -103,17 +94,18 @@
             "default" | translate
           }}</mat-button-toggle>
         </mat-button-toggle-group>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="preference-list-item">
         <span
           class="toggle-group-text"
           [ngClass]="{
-            'toggle-group-text--disabled': obs.preferencesDisabled
+            'toggle-group-text--disabled':
+              obs.isConnected || obs.preferencesDisabled
           }"
         >
-          {{ "preferred_protocol" | translate }}
+          {{ "network_lock" | translate }}
         </span>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="preference-list-item">
         <mat-button-toggle-group
           [disabled]="obs.preferencesDisabled"
           [ngModel]="preferredProtocol$ | async"
@@ -129,6 +121,14 @@
             "tcp" | translate
           }}</mat-button-toggle>
         </mat-button-toggle-group>
+        <span
+          class="toggle-group-text"
+          [ngClass]="{
+            'toggle-group-text--disabled': obs.preferencesDisabled
+          }"
+        >
+          {{ "preferred_protocol" | translate }}
+        </span>
       </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
