@@ -66,6 +66,8 @@ export class TrayService {
       disconnected: 'src/assets/icons/favicon-disconnected.png',
       notactivated: 'src/assets/icons/favicon-notactivated.png',
       notinstalled: 'src/assets/icons/favicon-notinstalled.png',
+      disconnecting: 'src/assets/icons/favicon-disconnecting.png',
+      connecting: 'src/assets/icons/favicon-connecting.png',
     };
   }
 
@@ -78,10 +80,6 @@ export class TrayService {
     this.tray.setContextMenu(this.menu);
     this.openStatusSubscription();
   }
-
-  private handleTrayClick = (item: string): void => {
-    console.log('click', item);
-  };
 
   private setTrayImage(imageUrl: string): void {
     this.tray.setImage(imageUrl);
@@ -97,6 +95,8 @@ export class TrayService {
       this.expressvpnService.isConnected$,
       this.expressvpnService.isInstalled$,
       this.expressvpnService.isActivated$,
+      this.expressvpnService.isDisconnecting$,
+      this.expressvpnService.isConnecting$,
       this.expressvpnService.connectedToMessage$,
     ]).subscribe(
       ([
@@ -104,6 +104,8 @@ export class TrayService {
         isConnected,
         isInstalled,
         isActivated,
+        isDisconnecting,
+        isConnecting,
         connectedToMessage,
       ]) => {
         const favicons = this.favicons;
@@ -127,7 +129,31 @@ export class TrayService {
         if (
           isInstalled &&
           isActivated &&
+          isConnecting &&
+          currentFavicon !== favicons.connecting
+        ) {
+          this.setTrayImage(favicons.connecting);
+          this.setCurrentFavicon(favicons.connecting);
+          this.setConnectingMenu();
+        }
+
+        if (
+          isInstalled &&
+          isActivated &&
+          isDisconnecting &&
+          currentFavicon !== favicons.disconnecting
+        ) {
+          this.setTrayImage(favicons.disconnecting);
+          this.setCurrentFavicon(favicons.disconnecting);
+          this.setDisconnectingMenu();
+        }
+
+        if (
+          isInstalled &&
+          isActivated &&
           isConnected &&
+          !isConnecting &&
+          !isDisconnecting &&
           currentFavicon !== favicons.connected
         ) {
           this.setTrayImage(favicons.connected);
@@ -139,6 +165,8 @@ export class TrayService {
           isInstalled &&
           isActivated &&
           !isConnected &&
+          !isConnecting &&
+          !isDisconnecting &&
           currentFavicon !== favicons.disconnected
         ) {
           this.setTrayImage(favicons.disconnected);
@@ -210,6 +238,32 @@ export class TrayService {
     this.menu = Menu.buildFromTemplate([
       {
         label: this.translateService.instant('notActivated'),
+        type: 'normal',
+      },
+    ]);
+
+    this.tray.setContextMenu(this.menu);
+  }
+
+  private setConnectingMenu(): void {
+    const { Menu } = window.require('@electron/remote');
+
+    this.menu = Menu.buildFromTemplate([
+      {
+        label: this.translateService.instant('connectingMessage'),
+        type: 'normal',
+      },
+    ]);
+
+    this.tray.setContextMenu(this.menu);
+  }
+
+  private setDisconnectingMenu(): void {
+    const { Menu } = window.require('@electron/remote');
+
+    this.menu = Menu.buildFromTemplate([
+      {
+        label: this.translateService.instant('disconnectingMessage'),
         type: 'normal',
       },
     ]);
