@@ -77,13 +77,13 @@ export class TrayService implements OnDestroy {
     }
 
     this.favicons = {
-      default: `${pathToUse}/favicon.png`,
-      connected: `${pathToUse}/favicon-connected.png`,
-      disconnected: `${pathToUse}/favicon-disconnected.png`,
-      notactivated: `${pathToUse}/favicon-notactivated.png`,
-      notinstalled: `${pathToUse}/favicon-notinstalled.png`,
-      disconnecting: `${pathToUse}/favicon-disconnecting.png`,
-      connecting: `${pathToUse}/favicon-connecting.png`,
+      default: `${pathToUse}/tray.png`,
+      connected: `${pathToUse}/tray-connected.png`,
+      disconnected: `${pathToUse}/tray-disconnected.png`,
+      notactivated: `${pathToUse}/tray-notactivated.png`,
+      notinstalled: `${pathToUse}/tray-notinstalled.png`,
+      disconnecting: `${pathToUse}/tray-disconnecting.png`,
+      connecting: `${pathToUse}/tray-connecting.png`,
     };
 
     this.openTray();
