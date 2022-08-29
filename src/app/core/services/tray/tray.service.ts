@@ -18,12 +18,14 @@ export class TrayService implements OnDestroy {
   path: typeof path;
   tray: any;
   menu: any;
+  appWindow: any;
 
   private statusSubscription!: Subscription;
 
   private favicons!: { [key: string]: string };
 
   private readonly currentFavicon$ = new BehaviorSubject<string>('');
+  private readonly windowIsHidden$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private readonly expressvpnService: ExpresssvpnService,
@@ -92,11 +94,24 @@ export class TrayService implements OnDestroy {
   private openTray(): void {
     const { Tray } = window.require('@electron/remote');
     const { Menu } = window.require('@electron/remote');
+
     this.tray = new Tray(this.favicons.default);
     this.currentFavicon$.next(this.favicons.default);
     this.menu = Menu.buildFromTemplate([]);
     this.tray.setContextMenu(this.menu);
     this.openStatusSubscription();
+    this.setMinimizeToTray();
+  }
+
+  private setMinimizeToTray(): void {
+    this.appWindow = window.require('@electron/remote').getCurrentWindow();
+
+    this.appWindow.on('minimize', (event) => {
+      event.preventDefault();
+      this.appWindow.hide();
+      this.windowIsHidden$.next(true);
+      return false;
+    });
   }
 
   private setTrayImage(imageUrl: string): void {
@@ -116,6 +131,7 @@ export class TrayService implements OnDestroy {
       this.expressvpnService.isDisconnecting$,
       this.expressvpnService.isConnecting$,
       this.expressvpnService.connectedToMessage$,
+      this.windowIsHidden$,
     ]).subscribe(
       ([
         currentFavicon,
@@ -128,7 +144,6 @@ export class TrayService implements OnDestroy {
       ]) => {
         const favicons = this.favicons;
 
-        // not installed
         if (!isInstalled && currentFavicon !== favicons.notinstalled) {
           this.setTrayImage(favicons.notinstalled);
           this.setCurrentFavicon(favicons.notinstalled);
@@ -202,6 +217,7 @@ export class TrayService implements OnDestroy {
         type: 'normal',
         click: () => this.expressvpnService.disconnect(),
       },
+      ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
@@ -223,6 +239,7 @@ export class TrayService implements OnDestroy {
         type: 'normal',
         click: () => this.expressvpnService.quickConnect(),
       },
+      ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
@@ -236,6 +253,7 @@ export class TrayService implements OnDestroy {
         label: this.translateService.instant('notInstalled'),
         type: 'normal',
       },
+      ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
@@ -249,6 +267,7 @@ export class TrayService implements OnDestroy {
         label: this.translateService.instant('notActivated'),
         type: 'normal',
       },
+      ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
@@ -262,6 +281,7 @@ export class TrayService implements OnDestroy {
         label: this.translateService.instant('connectingMessage'),
         type: 'normal',
       },
+      ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
@@ -275,8 +295,43 @@ export class TrayService implements OnDestroy {
         label: this.translateService.instant('disconnectingMessage'),
         type: 'normal',
       },
+      ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
+  }
+
+  private getDefaultMenuItems(): Array<any> {
+    return [
+      {
+        type: 'separator',
+      },
+      {
+        label: this.translateService.instant('showHide'),
+        type: 'normal',
+        click: () => this.toggleWindow(),
+      },
+      {
+        label: this.translateService.instant('exit'),
+        type: 'normal',
+        click: () => this.closeWindow(),
+      },
+    ];
+  }
+
+  private toggleWindow(): void {
+    const windowIsHidden = this.windowIsHidden$.getValue();
+
+    if (windowIsHidden) {
+      this.appWindow.show();
+      this.windowIsHidden$.next(false);
+    } else {
+      this.appWindow.hide();
+      this.windowIsHidden$.next(true);
+    }
+  }
+
+  private closeWindow(): void {
+    this.appWindow.close();
   }
 }

@@ -29,5 +29,7 @@
   "auto": "Auto",
   "udp": "UDP",
   "tcp": "TCP",
-  "noResults": "No results"
+  "noResults": "No results",
+  "showHide": "Show/hide window",
+  "exit": "Exit"
 }
