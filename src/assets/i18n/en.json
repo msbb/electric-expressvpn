@@ -31,5 +31,6 @@
   "tcp": "TCP",
   "noResults": "No results",
   "showHide": "Show/hide window",
-  "exit": "Exit"
+  "exit": "Exit",
+  "trayConnectToSmartLocation": "Connect to smart location"
 }

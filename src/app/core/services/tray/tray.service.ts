@@ -4,8 +4,9 @@ import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { ExpresssvpnService } from '../expressvpn/expressvpn.service';
-import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subscription, take } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { ExpresssvpnLocationsService } from '../expressvpn-locations/expressvpn-locations.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class TrayService implements OnDestroy {
 
   constructor(
     private readonly expressvpnService: ExpresssvpnService,
+    private readonly expressvpnLocationService: ExpresssvpnLocationsService,
     private readonly translateService: TranslateService
   ) {
     if (this.isElectron) {
@@ -217,6 +219,11 @@ export class TrayService implements OnDestroy {
         type: 'normal',
         click: () => this.expressvpnService.disconnect(),
       },
+      {
+        label: this.translateService.instant('trayConnectToSmartLocation'),
+        type: 'normal',
+        click: () => this.connectToSmartLocation(),
+      },
       ...this.getDefaultMenuItems(),
     ]);
 
@@ -238,6 +245,11 @@ export class TrayService implements OnDestroy {
         label: this.translateService.instant('quickConnect'),
         type: 'normal',
         click: () => this.expressvpnService.quickConnect(),
+      },
+      {
+        label: this.translateService.instant('trayConnectToSmartLocation'),
+        type: 'normal',
+        click: () => this.connectToSmartLocation(),
       },
       ...this.getDefaultMenuItems(),
     ]);
@@ -333,5 +345,13 @@ export class TrayService implements OnDestroy {
 
   private closeWindow(): void {
     this.appWindow.close();
+  }
+
+  private connectToSmartLocation(): void {
+    this.expressvpnLocationService.smartLocation$
+      .pipe(take(1))
+      .subscribe((smartLocation) => {
+        this.expressvpnService.connectToLocation(smartLocation.location);
+      });
   }
 }
