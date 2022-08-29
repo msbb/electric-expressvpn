@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root',
 })
-export class TrayService {
+export class TrayService implements OnDestroy {
   ipcRenderer: typeof ipcRenderer;
   webFrame: typeof webFrame;
   childProcess: typeof childProcess;
@@ -51,7 +51,6 @@ export class TrayService {
       });
 
       this.setTrayIcons();
-      this.openTray();
     }
   }
 
@@ -59,16 +58,35 @@ export class TrayService {
     return !!(window && window.process && window.process.type);
   }
 
+  ngOnDestroy(): void {
+    this.statusSubscription?.unsubscribe();
+  }
+
   private setTrayIcons(): void {
+    const srcPath = 'src/assets/icons';
+    const distPath = this.path.join(__dirname, 'assets', 'icons');
+    const srcIconsExist = this.fs.existsSync(srcPath);
+    const distIconsExist = this.fs.existsSync(distPath);
+
+    let pathToUse = '';
+
+    if (srcIconsExist) {
+      pathToUse = srcPath;
+    } else if (distIconsExist) {
+      pathToUse = distPath;
+    }
+
     this.favicons = {
-      default: this.path.join('src', 'assets', 'icons', 'favicon.png'),
-      connected: 'src/assets/icons/favicon-connected.png',
-      disconnected: 'src/assets/icons/favicon-disconnected.png',
-      notactivated: 'src/assets/icons/favicon-notactivated.png',
-      notinstalled: 'src/assets/icons/favicon-notinstalled.png',
-      disconnecting: 'src/assets/icons/favicon-disconnecting.png',
-      connecting: 'src/assets/icons/favicon-connecting.png',
+      default: `${pathToUse}/favicon.png`,
+      connected: `${pathToUse}/favicon-connected.png`,
+      disconnected: `${pathToUse}/favicon-disconnected.png`,
+      notactivated: `${pathToUse}/favicon-notactivated.png`,
+      notinstalled: `${pathToUse}/favicon-notinstalled.png`,
+      disconnecting: `${pathToUse}/favicon-disconnecting.png`,
+      connecting: `${pathToUse}/favicon-connecting.png`,
     };
+
+    this.openTray();
   }
 
   private openTray(): void {
@@ -110,13 +128,12 @@ export class TrayService {
       ]) => {
         const favicons = this.favicons;
 
+        // not installed
         if (!isInstalled && currentFavicon !== favicons.notinstalled) {
           this.setTrayImage(favicons.notinstalled);
           this.setCurrentFavicon(favicons.notinstalled);
           this.setNotInstalledMenu();
-        }
-
-        if (
+        } else if (
           isInstalled &&
           !isActivated &&
           currentFavicon !== favicons.notactivated
@@ -124,9 +141,7 @@ export class TrayService {
           this.setTrayImage(favicons.notactivated);
           this.setCurrentFavicon(favicons.notactivated);
           this.setNotActivatedMenu();
-        }
-
-        if (
+        } else if (
           isInstalled &&
           isActivated &&
           isConnecting &&
@@ -135,9 +150,7 @@ export class TrayService {
           this.setTrayImage(favicons.connecting);
           this.setCurrentFavicon(favicons.connecting);
           this.setConnectingMenu();
-        }
-
-        if (
+        } else if (
           isInstalled &&
           isActivated &&
           isDisconnecting &&
@@ -146,9 +159,7 @@ export class TrayService {
           this.setTrayImage(favicons.disconnecting);
           this.setCurrentFavicon(favicons.disconnecting);
           this.setDisconnectingMenu();
-        }
-
-        if (
+        } else if (
           isInstalled &&
           isActivated &&
           isConnected &&
@@ -159,9 +170,7 @@ export class TrayService {
           this.setTrayImage(favicons.connected);
           this.setCurrentFavicon(favicons.connected);
           this.setConnectedMenu(connectedToMessage);
-        }
-
-        if (
+        } else if (
           isInstalled &&
           isActivated &&
           !isConnected &&
