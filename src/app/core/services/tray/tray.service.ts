@@ -25,7 +25,7 @@ export class TrayService implements OnDestroy {
   private favicons!: { [key: string]: string };
 
   private readonly currentFavicon$ = new BehaviorSubject<string>('');
-  private readonly windowIsHidden$ = new BehaviorSubject<boolean>(false);
+  private readonly windowIsHidden$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     private readonly expressvpnService: ExpresssvpnService,

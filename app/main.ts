@@ -30,6 +30,7 @@ function createWindow(): BrowserWindow {
       contextIsolation: false, // false if you want to run e2e test with Spectron
     },
     icon: path.join(__dirname, 'assets', 'icons', 'favicon.png'),
+    show: false,
   });
 
   remoteMain.enable(win.webContents);
