@@ -6,25 +6,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectionListChange } from '@angular/material/list';
-import { MatDrawer } from '@angular/material/sidenav';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import {
-  BehaviorSubject,
-  combineLatest,
-  Observable,
-  Subscription,
-  take,
-} from 'rxjs';
-import {
-  CountryWithLocations,
-  ExpressvpnLocation,
-  LocationsSortedByCountry,
   NetworkLock,
   ExpressvpnPreference,
   PreferredProtocol,
 } from '../../../core/models';
 import {
-  ExpresssvpnLocationsService,
   ExpresssvpnPreferencesService,
   ExpresssvpnService,
 } from '../../../core/services';
@@ -56,8 +44,11 @@ export class SettingsComponent implements OnInit, OnDestroy {
   readonly sendDiagnostics$ = new BehaviorSubject<boolean>(false);
   readonly networkLock$ = new BehaviorSubject<NetworkLock>('off');
   readonly preferredProtocol$ = new BehaviorSubject<PreferredProtocol>('auto');
+  readonly minimizeToTray$ = new BehaviorSubject<boolean>(false);
+  readonly hideOnStart$ = new BehaviorSubject<boolean>(false);
 
   private preferencesSubscription!: Subscription;
+  private store!: any;
 
   constructor(
     private readonly expressvpnService: ExpresssvpnService,
@@ -142,7 +133,20 @@ export class SettingsComponent implements OnInit, OnDestroy {
     this.preferredProtocol$.next(value);
   }
 
+  minimizeToTrayChange(value: boolean) {
+    this.store.set('minimizeToTray', value);
+    this.minimizeToTray$.next(value);
+  }
+
+  hideOnStartChange(value: boolean) {
+    this.store.set('hideOnStart', value);
+    this.hideOnStart$.next(value);
+  }
+
   private openPreferencesSubscription(): void {
+    const Store = window.require('electron-store');
+    this.store = new Store();
+
     this.expressvpnPreferencesService.expressvpnPreferences$.subscribe(
       (preferences) => {
         if (preferences) {
@@ -168,6 +172,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
           const sendDiagnostics = preferences.find(
             (pref) => pref.preference === ExpressvpnPreference.sendDiagnostics
           );
+          const minimizeToTray = this.store.get('minimizeToTray', true);
+          const hideOnStart = this.store.get('hideOnStart', true);
 
           this.autoConnect$.next(autoConnect.value === 'true');
           this.blockTrackers$.next(blockTrackers.value === 'true');
@@ -180,6 +186,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
           this.preferredProtocol$.next(
             preferredProtocol.value as PreferredProtocol
           );
+          this.minimizeToTray$.next(minimizeToTray);
+          this.hideOnStart$.next(hideOnStart);
         }
       }
     );

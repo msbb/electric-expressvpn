@@ -20,6 +20,7 @@ export class TrayService implements OnDestroy {
   tray: any;
   menu: any;
   appWindow: any;
+  store!: any;
 
   private statusSubscription!: Subscription;
 
@@ -106,13 +107,19 @@ export class TrayService implements OnDestroy {
   }
 
   private setMinimizeToTray(): void {
+    const Store = window.require('electron-store');
+    this.store = new Store();
+
     this.appWindow = window.require('@electron/remote').getCurrentWindow();
 
     this.appWindow.on('minimize', (event) => {
-      event.preventDefault();
-      this.appWindow.hide();
-      this.windowIsHidden$.next(true);
-      return false;
+      const minimizeToTray = this.store.get('minimizeToTray', true);
+      if (minimizeToTray) {
+        event.preventDefault();
+        this.appWindow.hide();
+        this.windowIsHidden$.next(true);
+        return false;
+      }
     });
   }
 

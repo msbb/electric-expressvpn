@@ -32,5 +32,7 @@
   "noResults": "No results",
   "showHide": "Show/hide window",
   "exit": "Exit",
-  "trayConnectToSmartLocation": "Connect to smart location"
+  "trayConnectToSmartLocation": "Connect to smart location",
+  "minimizeToTray": "Minimize to tray",
+  "hideOnStart": "Hide on start"
 }

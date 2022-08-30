@@ -63,6 +63,7 @@
     "@electron/remote": "2.0.8",
     "@mdi/font": "7.0.96",
     "console-browserify": "1.2.0",
+    "electron-store": "8.1.0",
     "execa": "6.1.0",
     "flag-icons": "6.6.6",
     "rxjs": "7.5.6",

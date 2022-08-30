@@ -1,8 +1,8 @@
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
-import { webContents, Tray } from '@electron/remote';
 import * as remoteMain from '@electron/remote/main';
+import * as Store from 'electron-store';
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -12,7 +12,9 @@ function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
   const optimalWidth = 420;
   const optimalHeight = 620;
-  // Create the browser window.
+  const store = new Store();
+  const hideOnStart = store.get('hideOnStart', true);
+  const minimizeToTray = store.get('minimizeToTray', true);
 
   remoteMain.initialize();
 
@@ -30,7 +32,7 @@ function createWindow(): BrowserWindow {
       contextIsolation: false, // false if you want to run e2e test with Spectron
     },
     icon: path.join(__dirname, 'assets', 'icons', 'favicon.png'),
-    show: false,
+    show: !hideOnStart,
   });
 
   remoteMain.enable(win.webContents);

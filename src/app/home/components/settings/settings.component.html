@@ -130,6 +130,24 @@
           }}</mat-button-toggle>
         </mat-button-toggle-group>
       </div>
+      <mat-divider></mat-divider>
+      <div class="preference-list-item">
+        <mat-slide-toggle
+          [ngModel]="minimizeToTray$ | async"
+          (ngModelChange)="minimizeToTrayChange($event)"
+          [disabled]="obs.preferencesDisabled"
+          >{{ "minimizeToTray" | translate }}</mat-slide-toggle
+        >
+      </div>
+      <mat-divider></mat-divider>
+      <div class="preference-list-item">
+        <mat-slide-toggle
+          [ngModel]="hideOnStart$ | async"
+          (ngModelChange)="hideOnStartChange($event)"
+          [disabled]="obs.preferencesDisabled"
+          >{{ "hideOnStart" | translate }}</mat-slide-toggle
+        >
+      </div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button matDialogClose color="accent">

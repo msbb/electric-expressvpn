@@ -1,4 +1,4 @@
 export const SETTINGS = {
-  isInstalledPollingMs: 2000,
-  statusPollingMs: 1000,
+  isInstalledPollingMs: 2500,
+  statusPollingMs: 1500,
 };
