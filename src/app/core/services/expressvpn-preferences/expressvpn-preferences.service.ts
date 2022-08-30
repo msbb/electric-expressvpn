@@ -3,22 +3,9 @@ import { ipcRenderer, webFrame } from 'electron';
 import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import * as util from 'util';
-import {
-  Observable,
-  from,
-  map,
-  catchError,
-  of,
-  BehaviorSubject,
-  take,
-  tap,
-} from 'rxjs';
+import { Observable, from, BehaviorSubject, take, tap } from 'rxjs';
 import { COMMANDS } from '../../constants';
-import {
-  ExpressvpnLocation,
-  ExpressvpnPreferences,
-  LocationsSortedByCountry,
-} from '../../models';
+import { ExpressvpnPreferences } from '../../models';
 
 @Injectable({
   providedIn: 'root',
