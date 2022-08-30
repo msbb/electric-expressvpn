@@ -33,6 +33,7 @@ function createWindow(): BrowserWindow {
     },
     icon: path.join(__dirname, 'assets', 'icons', 'favicon.png'),
     show: !hideOnStart,
+    title: 'Electric ExpressVPN',
   });
 
   remoteMain.enable(win.webContents);

@@ -235,14 +235,16 @@ export class TrayService implements OnDestroy {
     ]);
 
     this.tray.setContextMenu(this.menu);
+    this.tray.setToolTip(connectedToMessage);
   }
 
   private setDisconnectedMenu(): void {
     const { Menu } = window.require('@electron/remote');
+    const disconnected = this.translateService.instant('disconnected');
 
     this.menu = Menu.buildFromTemplate([
       {
-        label: this.translateService.instant('disconnected'),
+        label: disconnected,
         type: 'normal',
       },
       {
@@ -262,62 +264,71 @@ export class TrayService implements OnDestroy {
     ]);
 
     this.tray.setContextMenu(this.menu);
+    this.tray.setToolTip(disconnected);
   }
 
   private setNotInstalledMenu(): void {
     const { Menu } = window.require('@electron/remote');
+    const notInstalled = this.translateService.instant('notInstalled');
 
     this.menu = Menu.buildFromTemplate([
       {
-        label: this.translateService.instant('notInstalled'),
+        label: notInstalled,
         type: 'normal',
       },
       ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
+    this.tray.setToolTip(notInstalled);
   }
 
   private setNotActivatedMenu(): void {
     const { Menu } = window.require('@electron/remote');
+    const notActivated = this.translateService.instant('notActivated');
 
     this.menu = Menu.buildFromTemplate([
       {
-        label: this.translateService.instant('notActivated'),
+        label: notActivated,
         type: 'normal',
       },
       ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
+    this.tray.setToolTip(notActivated);
   }
 
   private setConnectingMenu(): void {
     const { Menu } = window.require('@electron/remote');
+    const connecting = this.translateService.instant('connectingMessage');
 
     this.menu = Menu.buildFromTemplate([
       {
-        label: this.translateService.instant('connectingMessage'),
+        label: connecting,
         type: 'normal',
       },
       ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
+    this.tray.setToolTip(connecting);
   }
 
   private setDisconnectingMenu(): void {
     const { Menu } = window.require('@electron/remote');
+    const disconnecting = this.translateService.instant('disconnectingMessage');
 
     this.menu = Menu.buildFromTemplate([
       {
-        label: this.translateService.instant('disconnectingMessage'),
+        label: disconnecting,
         type: 'normal',
       },
       ...this.getDefaultMenuItems(),
     ]);
 
     this.tray.setContextMenu(this.menu);
+    this.tray.setToolTip(disconnecting);
   }
 
   private getDefaultMenuItems(): Array<any> {
