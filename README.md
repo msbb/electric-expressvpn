@@ -74,7 +74,6 @@ Since this application was developed using Electron, it might work on other oper
 
 | Screenshot |
 | ------------- |
-| ![Connected](./images/screenshots/connected.png)  |
 | ![Connected](./images/screenshots/connected.png) |
 | ![Connect to location](./images/screenshots/connect-to-location.png) |
 | ![Search location](./images/screenshots/search-location.png) |
