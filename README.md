@@ -34,11 +34,10 @@ Electric ExpressVPN is an ExpressVPN client for linux made using Angular and Ele
 ### Running the application
 
 - Grab the latest release from the [releases page](https://github.com/msbb/electric-expressvpn/releases)
-- Mark the downloaded `.AppImage` file as executable
-    - Open a terminal
-    - Navigate to the directory where you save the file (i.e. `cd /home/USER_NAME/Applications/`)
-    - Mark the file as executable using `chmod` (i.e. `chmod +x electric-expressvpn-1.0.0.AppImage`)
-    - Run the file (i.e. `./electric-expressvpn-1.0.0.AppImage`)
+- Open a terminal
+- Navigate to the directory where you saved the file (i.e. `cd /home/USER_NAME/Applications/`)
+- Mark the file as executable using `chmod` (i.e. `chmod +x electric-expressvpn-1.0.0.AppImage`)
+- Run the file (i.e. `./electric-expressvpn-1.0.0.AppImage`)
 
 ### Installing the application
 
