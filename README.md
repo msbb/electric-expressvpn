@@ -2,7 +2,7 @@
 
 # Electric ExpressVPN
 
-Electric ExpressVPN is an ExpressVPN client for Linux made using Angular and Electron, based on the [angular-electron](https://github.com/maximegris/angular-electron) boilerplate.
+Electric ExpressVPN is an ExpressVPN client for Linux made using Angular and Electron, based on the [angular-electron](https://github.com/maximegris/angular-electron) boilerplate. This project is not in any way affiliated with ExpressVPN.
 
 ## Features
 - Compact resizable window
