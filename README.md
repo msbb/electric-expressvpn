@@ -24,7 +24,9 @@ Electric ExpressVPN is an ExpressVPN client for linux made using Angular and Ele
     - Show / hide application
     - Exit application
 
-## Prerequisites
+## Running and installing
+
+### Prerequisites
 
 - libappindicator1
 - ExpressVPN command line installed and activated
@@ -47,6 +49,8 @@ Electric ExpressVPN is an ExpressVPN client for linux made using Angular and Ele
 - To run Electric ExpressVPN on startup, add a startup command pointing to the saved `.AppImage` file:
     - `/home/USER_NAME/Applications/electric-expressvpn-1.0.0.AppImage`
 
+## Issues
+
 ### Known issues
 
 - The tray icon flashes on changing state
@@ -55,7 +59,7 @@ Electric ExpressVPN is an ExpressVPN client for linux made using Angular and Ele
 
 If you run into any issues while using this application, please open a new issue on the [issues page](https://github.com/msbb/electric-expressvpn/issues). Clearly describe what problem occurs in what situation, what version of the ExpressVPN command line you are using, and what version of the Electric ExpressVPN client you are using.
 
-### Contributing
+## Contributing
 
 In order to contribute, fork this repository, make your changes and add a pull request to this repository. Prefix your pull request name either with `feature/` or `bugfix/`, and your pull request title with `feat:` or `fix:`. 
 
@@ -63,11 +67,11 @@ In your pull request description, clearly describe the aim of the pull request. 
 
 Make sure there are no linting errors in your code by running `npm run lint` before submitting the pull request.
 
-### Other operating systems
+## Other operating systems
 
 Since this application was developed using Electron, it might work on other operating systems. This has not been tested, since Windows and macOS already have dedicated ExpressVPN clients. To test this, clone this project, and run `npm install` and `electron:build` from the project root, from the OS you would like to build it for.
 
-### Screenshots
+## Screenshots
 
 ![Connected](./images/screenshots/connected.png)
 ![Connect to location](./images/screenshots/connect-to-location.png)
