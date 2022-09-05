@@ -78,6 +78,7 @@ Since this application was developed using Electron, it might work on other oper
 | ![Connect to location](./images/screenshots/connect-to-location.png) |
 | ![Search location](./images/screenshots/search-location.png) |
 | ![Disconnected](./images/screenshots/disconnected.png) |
+| ![User preferences](./images/screenshots/user-preferences.png) |
 | ![Tray - connected](./images/screenshots/tray-connected.png) |
 | ![Tray - disconnected](./images/screenshots/tray-disconnected.png) |
 | ![Not available](./images/screenshots/not-available.png) |
