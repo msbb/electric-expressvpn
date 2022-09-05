@@ -2,7 +2,7 @@
 
 # Electric ExpressVPN
 
-Electric ExpressVPN is an ExpressVPN client for linux made using Angular and Electron, based on the [angular-electron](https://github.com/maximegris/angular-electron) boilerplate. 
+Electric ExpressVPN is an ExpressVPN client for linux made using Angular and Electron, based on the [angular-electron](https://github.com/maximegris/angular-electron) boilerplate.
 
 ## Features
 - Compact resizable window
@@ -72,12 +72,16 @@ Since this application was developed using Electron, it might work on other oper
 
 ## Screenshots
 
-![Connected](./images/screenshots/connected.png)
-![Connect to location](./images/screenshots/connect-to-location.png)
-![Search location](./images/screenshots/search-location.png)
-![Disconnected](./images/screenshots/disconnected.png)
-![Tray - connected](./images/screenshots/tray-connected.png)
-![Tray - disconnected](./images/screenshots/tray-disconnected.png)
-![Not available](./images/screenshots/not-available.png)
-![Tray - Not available](./images/screenshots/tray-not-available.png)![Not activated](./images/screenshots/not-activated.png)
-![Tray - Not activated](./images/screenshots/tray-not-activated.png)
+| Screenshot |
+| ------------- |
+| ![Connected](./images/screenshots/connected.png)  |
+| ![Connected](./images/screenshots/connected.png) |
+| ![Connect to location](./images/screenshots/connect-to-location.png) |
+| ![Search location](./images/screenshots/search-location.png) |
+| ![Disconnected](./images/screenshots/disconnected.png) |
+| ![Tray - connected](./images/screenshots/tray-connected.png) |
+| ![Tray - disconnected](./images/screenshots/tray-disconnected.png) |
+| ![Not available](./images/screenshots/not-available.png) |
+| ![Tray - Not available](./images/screenshots/tray-not-available.png) |
+| ![Not activated](./images/screenshots/not-activated.png) |
+| ![Tray - Not activated](./images/screenshots/tray-not-activated.png) |
