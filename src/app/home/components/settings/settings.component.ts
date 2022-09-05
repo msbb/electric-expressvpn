@@ -144,6 +144,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   private openPreferencesSubscription(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const Store = window.require('electron-store');
     this.store = new Store();
 

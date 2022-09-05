@@ -95,7 +95,9 @@ export class TrayService implements OnDestroy {
   }
 
   private openTray(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Tray } = window.require('@electron/remote');
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
 
     this.tray = new Tray(this.favicons.default);
@@ -107,6 +109,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setMinimizeToTray(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const Store = window.require('electron-store');
     this.store = new Store();
 
@@ -211,6 +214,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setConnectedMenu(connectedToMessage: string): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
 
     this.menu = Menu.buildFromTemplate([
@@ -239,6 +243,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setDisconnectedMenu(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
     const disconnected = this.translateService.instant('disconnected');
 
@@ -268,6 +273,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setNotInstalledMenu(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
     const notInstalled = this.translateService.instant('notInstalled');
 
@@ -284,6 +290,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setNotActivatedMenu(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
     const notActivated = this.translateService.instant('notActivated');
 
@@ -300,6 +307,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setConnectingMenu(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
     const connecting = this.translateService.instant('connectingMessage');
 
@@ -316,6 +324,7 @@ export class TrayService implements OnDestroy {
   }
 
   private setDisconnectingMenu(): void {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { Menu } = window.require('@electron/remote');
     const disconnecting = this.translateService.instant('disconnectingMessage');
 

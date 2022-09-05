@@ -2,7 +2,7 @@
   "name": "electric-expressvpn",
   "version": "1.0.0",
   "description": "ExpressVPN desktop app made with Angular and Electron. Implemented using the ExpressVPN command-line app.",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "homepage": "https://github.com/msbb/electric-expressvpn",
   "author": {
     "name": "Maxim Buur",
     "email": "mail@maximbuur.nl"
@@ -95,7 +95,7 @@
     "electron-reloader": "1.2.3",
     "eslint": "8.20.0",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jsdoc": "39.3.3",
+    "eslint-plugin-jsdoc": "39https://github.com/maximegris/angular-electron.3.3",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "jasmine-core": "4.2.0",
     "jasmine-spec-reporter": "7.0.0",
